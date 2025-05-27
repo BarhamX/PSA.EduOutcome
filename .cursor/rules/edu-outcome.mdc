@@ -1,0 +1,373 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Project Summary
+Project Title:
+Outcome-Based Student Assessment and Analytics System
+
+Summary:
+The project aims to develop a comprehensive web-based system for universities to evaluate and analyze students achievement of course learning outcomes (LOs). The system allows instructors to link assessment items (such as exam questions or assignments) to specific learning outcomes, enter student grades, and automatically calculate performance per outcome. Advanced analytics and reporting modules provide actionable statistics at the course, program, faculty, and university levels, enabling data-driven improvement and supporting accreditation processes.
+
+Key Features
+Map assessment items/questions to learning outcomes.
+
+Assign and distribute marks across multiple LOs.
+
+Record and aggregate students marks for each LO.
+
+Validate mark distribution and LO coverage, preventing conflicts.
+
+Multi-level statistics: by student, course, program, faculty, university.
+
+Visual dashboards for achievement tracking and decision-making.
+
+Role-based access for instructors, admins, and students.
+
+2. Enhancements to Make It World-Class and Competitive
+To make the system “rival” and best-in-class, consider these enhancements:
+
+Accreditation Readiness: Built-in alignment with major accreditation standards (e.g., ABET, AACSB, NCAAA).
+
+AI-Powered Insights: Predict student risk, recommend interventions, and benchmark LO achievements using machine learning.
+
+Bulk Import/Export: Seamless Excel/CSV import and export for grades, questions, and mappings.
+
+Rubrics Support: Advanced rubrics for subjective assessments and holistic grading.
+
+Feedback Loops: Automated feedback for students per LO, based on their performance.
+
+Continuous Improvement: Tools for curriculum mapping, gap analysis, and closing-the-loop tracking.
+
+Multi-language/Localization: Arabic/English interface for wider adoption.
+
+API Integrations: Easy connection with SIS, LMS, or other institutional systems.
+
+Mobile-Friendly UI: Responsive Angular design for instructors and students on any device.
+
+Notifications: Smart reminders for grading, reporting, and follow-ups.
+
+Audit Trails: Complete change and access logs for transparency and compliance.
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+## **1. Solution Structure**
+
+Use a **modular monolith** approach for extensibility. Suggested main modules:
+
+* **Core Domain Module** (Entities/Aggregates, Domain Services, Domain Events)
+* **Application Module** (DTOs, Application Services, Query Services)
+* **Web API Module** (Controllers, API endpoints)
+* **Angular UI** (Feature modules for each business domain)
+
+---
+
+## **2. Key Domains and Aggregates**
+
+### **A. Students**
+
+* Aggregate Root: `Student`
+* Properties: `Id, Name, StudentNumber, Email, ...`
+* Relationships: Enrollments, Responses
+
+### **B. Courses**
+
+* Aggregate Root: `Course`
+* Properties: `Id, Code, Name, Credits, DepartmentId, ...`
+* Relationships: LearningOutcomes, Assessments, Enrollments
+
+### **C. Learning Outcomes (LO)**
+
+* Aggregate Root: `LearningOutcome`
+* Properties: `Id, Description, MaxMark, CourseId, ...`
+
+### **D. Assessment**
+
+* Aggregate Root: `Assessment`
+* Properties: `Id, Title, Type, CourseId, Date, ...`
+* Relationships: Questions
+
+### **E. Question**
+
+* Aggregate Root: `Question`
+* Properties: `Id, Text, AssessmentId, MaxMark`
+* Many-to-Many: `QuestionLearningOutcome` (which LOs this question assesses)
+
+### **F. Enrollment**
+
+* Aggregate Root: `Enrollment`
+* Properties: `Id, StudentId, CourseId, Status, ...`
+* Used for student-course registration
+
+### **G. StudentResponse**
+
+* Aggregate Root: `StudentResponse`
+* Properties: `Id, StudentId, QuestionId, Grade, Comment`
+
+---
+
+## **3. Implementation Steps & Principles**
+
+### **A. Define Domain Entities & Aggregates**
+
+* **Use ABP’s Entity base class** (audited, tenant-aware if needed)
+* Define navigation properties for relationships (EF Core)
+* Use value objects where appropriate (e.g., `Grade`)
+* Raise domain events on key actions (optional for extensibility)
+
+### **B. Repositories**
+
+* One repository per Aggregate Root (ABP best practice).
+* E.g., `IStudentRepository`, `ICourseRepository`, `ILearningOutcomeRepository`, etc.
+
+### **C. Domain Services (if needed)**
+
+* Encapsulate business logic that spans aggregates, e.g., grade validation, LO aggregation.
+
+---
+
+## **4. Application Layer**
+
+### **A. DTOs**
+
+* **Create DTOs for all CRUD operations** (Create, Update, Read, Delete)
+
+  * Example: `CreateLearningOutcomeDto`, `UpdateLearningOutcomeDto`, `LearningOutcomeDto`
+* Use `AutoMapper` for entity <-> DTO mapping.
+
+### **B. Application Services**
+
+* **One service per major entity/aggregate**
+
+  * `StudentAppService`
+  * `CourseAppService`
+  * `LearningOutcomeAppService`
+  * `AssessmentAppService`
+  * `QuestionAppService`
+  * `EnrollmentAppService`
+  * `StudentResponseAppService`
+* **Methods** for each business requirement (add, update, delete, map, import, etc.)
+* **Inject repositories and domain services**
+* **Validation** (use Data Annotations or FluentValidation as needed)
+
+### **C. Use CQRS Pattern for Queries**
+
+* Separate read models if you need complex/statistical queries.
+
+---
+
+## **5. Web API Layer**
+
+* **RESTful controllers** for each AppService (ABP auto-generates if using Application Service pattern)
+* **Custom endpoints** for reporting/statistics, as needed (e.g., `GetOutcomeStatistics`, `ExportGrades`)
+
+---
+
+## **6. Angular Frontend**
+
+* **Use ABP Angular template**
+* **Feature modules:** Students, Courses, LOs, Assessments, Grading, Reports
+* **Component per use case:** LO mapping, assessment/question management, grade entry, analytics dashboard
+* **Services:** Use ABP-generated proxies for backend communication
+
+---
+
+## **7. Feature-by-Feature Implementation Checklist**
+
+---
+
+### **A. Students Management**
+
+* **Entities:** `Student`
+* **App Service:** `StudentAppService` (CRUD)
+* **Controller:** auto by ABP
+* **Angular:** Student List, Create/Edit, Enrollment UI
+
+---
+
+### **B. Courses Management**
+
+* **Entities:** `Course`
+* **App Service:** `CourseAppService` (CRUD)
+* **Angular:** Course List, Details, Assign Learning Outcomes
+
+---
+
+### **C. Learning Outcomes (LO)**
+
+* **Entities:** `LearningOutcome`
+* **App Service:** `LearningOutcomeAppService`
+* **Features:**
+
+  * CRUD LOs per Course
+  * Assign max marks per LO
+* **Angular:** LO List/Editor, show LO coverage per course
+
+---
+
+### **D. Assessments & Questions**
+
+* **Entities:** `Assessment`, `Question`
+* **App Services:** `AssessmentAppService`, `QuestionAppService`
+* **Features:**
+
+  * Create assessment per course
+  * CRUD questions
+  * Map each question to LOs (`QuestionLearningOutcome` many-to-many entity)
+  * Allocate marks per question and per LO
+* **Angular:** Assessment/Question builder UI, question-to-LO mapping
+
+---
+
+### **E. Student Enrollment**
+
+* **Entities:** `Enrollment`
+* **App Service:** `EnrollmentAppService`
+* **Features:**
+
+  * Register students to courses
+* **Angular:** Enrollment screens, course rosters
+
+---
+
+### **F. Student Grading**
+
+* **Entities:** `StudentResponse`
+* **App Service:** `StudentResponseAppService`
+* **Features:**
+
+  * Grade entry (by question, by student, by assessment)
+  * Bulk import (Excel/CSV)
+  * Calculate per-LO grades for each student
+  * Conflict/validation checks (e.g., over/under-assessed LOs)
+* **Angular:** Gradebook UI, quick grading, bulk upload
+
+---
+
+### **G. Validation & Conflict Detection**
+
+* **Domain Services:** `LearningOutcomeValidationService`
+* **Features:**
+
+  * Validate all LOs are covered
+  * No LO exceeds max mark
+  * No duplicate question-LO mapping
+  * Total course mark = sum of LOs
+
+---
+
+### **H. Reporting & Analytics**
+
+* **Query Services / Read Models:** aggregate data for reporting
+* **App Service/Controller:** `ReportingAppService`/`ReportingController`
+* **Features:**
+
+  * Student LO achievement
+  * Course, program, faculty, university level analytics
+  * Export to Excel/CSV/PDF
+  * Visualizations (bar/pie charts)
+* **Angular:** Reporting dashboard, filter by course/faculty/level
+
+---
+
+### **I. User & Role Management**
+
+* **Leverage ABP Identity module**
+* **Define Roles:** Instructor, Student, Admin, QA officer
+* **Permissions:** Restrict features by role
+
+---
+
+### **J. Localization**
+
+* **ABP Localization (JSON, resx, etc.)**
+* **Angular i18n**
+* Support for Arabic and English in all screens/messages
+
+---
+
+### **K. Import/Export**
+
+* **Implement importers using ABP background jobs for large data**
+* **App Service:** `ImportExportAppService`
+* **Angular:** File upload/download components
+
+---
+
+### **L. Audit Logging**
+
+* Use ABP's built-in **audit log** for all entities and changes
+
+---
+
+### **M. Notifications**
+
+* Use ABP Notification system for reminders, deadlines, feedback
+* Angular toast/alert components
+
+---
+
+## **8. Design Principles & Best Practices**
+
+* **Aggregate Roots:** Only root entities can be loaded/modified directly (enforce transactional boundaries)
+* **DTOs:** Use DTOs for all external communication; never expose entities directly
+* **Validation:** Always validate input at app service and domain layer
+* **Exception Handling:** Use ABP’s exception handling middleware
+* **Separation of Concerns:** Domain, Application, Infrastructure, Web layers
+* **Dependency Injection:** Use ABP’s DI for all services
+* **Soft Delete:** Use ABP’s ISoftDelete for entities
+* **Auditing:** Use IAuditedObject on entities
+
+---
+
+## **9. Advanced Features (Optional, for “Rival” Product)**
+
+* **CQRS (Command/Query Separation)** for complex reporting
+* **Domain Events** for tracking important actions (e.g., LO achieved, assessment published)
+* **Background Jobs** for long-running imports/exports
+* **SignalR** for real-time updates (e.g., grades released)
+* **API Layer:** OpenAPI/Swagger docs via ABP
+
+---
+
+## **10. Documentation & DevOps**
+
+* Write full API and domain documentation
+* Set up ABP’s migration and seeding for test/demo data
+* Configure CI/CD (GitHub Actions, Azure DevOps, etc.)
+
+---
+
+## **Summary Table**
+
+| Feature                 | Domain Entity       | App Service                   | Angular Feature/Component | Notes                             |
+| ----------------------- | ------------------- | ----------------------------- | ------------------------- | --------------------------------- |
+| Students                | Student             | StudentAppService             | Student CRUD, Enrollment  |                                   |
+| Courses                 | Course              | CourseAppService              | Course CRUD, Assign LOs   |                                   |
+| Learning Outcomes       | LearningOutcome     | LearningOutcomeAppService     | LO CRUD, Mapping UI       |                                   |
+| Assessments & Questions | Assessment,Question | Assessment/QuestionAppService | Assessment/Question UI    | Map Q to LOs, allocate marks      |
+| Student Enrollment      | Enrollment          | EnrollmentAppService          | Enroll Student UI         |                                   |
+| Student Grading         | StudentResponse     | StudentResponseAppService     | Grading UI, Bulk Import   | Validation, per-LO aggregation    |
+| Validation              | -                   | ValidationService             | Error/warning popups      | LO mark, coverage, conflicts      |
+| Reporting/Analytics     | -                   | ReportingAppService           | Reports Dashboard         | Program/faculty/university rollup |
+| User & Role Management  | Identity Module     | -                             | User/Roles UI             | ABP built-in                      |
+| Localization            | -                   | -                             | Language switcher         | ABP+Angular i18n                  |
+| Import/Export           | -                   | ImportExportAppService        | File upload/download      |                                   |
+| Notifications           | -                   | NotificationService           | Alerts/Reminders          | ABP built-in                      |
+
+---
+
+## **Conclusion**
+
+**Follow this plan step-by-step:**
+
+* Start with the Domain layer and DDD design.
+* Implement application services and validation logic.
+* Build out API endpoints via controllers.
+* Develop Angular modules per feature.
+* Validate using ABP best practices for security, localization, and extensibility.
+
+---
+
+If you want **sample code for any entity or service, just ask!**
+
