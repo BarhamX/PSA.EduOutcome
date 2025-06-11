@@ -10,6 +10,7 @@ namespace PSA.EduOutcome.DTOs
     public class StudentDto : AuditedEntityDto<Guid>
     {
         public string StudentNumber { get; set; }
+        public string ReferenceNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {LastName}";
@@ -26,7 +27,7 @@ namespace PSA.EduOutcome.DTOs
 
     public class CreateStudentDto
     {
-        public string StudentNumber { get; set; }
+        public string ReferenceNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -38,6 +39,7 @@ namespace PSA.EduOutcome.DTOs
 
     public class UpdateStudentDto
     {
+        public string ReferenceNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

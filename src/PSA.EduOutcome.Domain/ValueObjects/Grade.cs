@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
 namespace PSA.EduOutcome.ValueObjects
 {
-    public class Grade : AbpValueObject
+    public class Grade : ValueObject
     {
         public decimal Value { get; }
 

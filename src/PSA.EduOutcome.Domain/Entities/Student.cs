@@ -18,6 +18,7 @@ namespace PSA.EduOutcome.Entities
         public DateTime EnrollmentDate { get; private set; }
         public string Status { get; private set; } // Active, Graduated, Suspended, Withdrawn
         public Guid? UserId { get; private set; } // Link to Identity User
+        public string ReferenceNumber { get; private set; }
 
         // Navigation properties
         public virtual Program Program { get; private set; }
@@ -31,6 +32,36 @@ namespace PSA.EduOutcome.Entities
             Responses = new HashSet<StudentResponse>();
         }
 
+        public static Student Create(
+            string firstName,
+            string lastName,
+            string email,
+            DateTime dateOfBirth,
+            string gender,
+            Guid programId,
+            string referenceNumber,
+            string phone = null)
+        {
+            var studentNumber = GenerateStudentNumber();
+            return new Student(
+                GuidGenerator.Create(),
+                studentNumber,
+                firstName,
+                lastName,
+                email,
+                dateOfBirth,
+                gender,
+                programId,
+                phone,
+                referenceNumber
+            );
+        }
+
+        private static string GenerateStudentNumber()
+        {
+            return $"STU-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
+        }
+
         public Student(
             Guid id,
             string studentNumber,
@@ -40,7 +71,8 @@ namespace PSA.EduOutcome.Entities
             DateTime dateOfBirth,
             string gender,
             Guid programId,
-            string phone = null) : base(id)
+            string phone,
+            string referenceNumber) : base(id)
         {
             SetStudentNumber(studentNumber);
             SetName(firstName, lastName);
@@ -53,6 +85,7 @@ namespace PSA.EduOutcome.Entities
             Status = StudentStatus.Active;
             Enrollments = new HashSet<Enrollment>();
             Responses = new HashSet<StudentResponse>();
+            ReferenceNumber = referenceNumber;
         }
 
         public void SetStudentNumber(string studentNumber)
@@ -127,6 +160,23 @@ namespace PSA.EduOutcome.Entities
                 throw new BusinessException("Cannot reactivate a graduated student.");
             }
             Status = StudentStatus.Active;
+        }
+
+        public void Update(
+            string firstName,
+            string lastName,
+            string email,
+            string phone,
+            DateTime dateOfBirth,
+            string gender,
+            Guid programId)
+        {
+            SetName(firstName, lastName);
+            SetEmail(email);
+            SetDateOfBirth(dateOfBirth);
+            SetGender(gender);
+            ChangeProgram(programId);
+            Phone = phone;
         }
     }
 

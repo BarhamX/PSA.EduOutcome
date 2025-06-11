@@ -168,6 +168,7 @@ public class EduOutcomeDbContext :
             b.ConfigureByConvention();
             
             b.Property(x => x.StudentNumber).IsRequired().HasMaxLength(50);
+            b.Property(x => x.ReferenceNumber).IsRequired().HasMaxLength(50);
             b.Property(x => x.FirstName).IsRequired().HasMaxLength(100);
             b.Property(x => x.LastName).IsRequired().HasMaxLength(100);
             b.Property(x => x.Email).IsRequired().HasMaxLength(256);
@@ -179,8 +180,9 @@ public class EduOutcomeDbContext :
                 .WithMany()
                 .HasForeignKey(x => x.ProgramId)
                 .OnDelete(DeleteBehavior.Restrict);
-                
+            
             b.HasIndex(x => x.StudentNumber).IsUnique();
+            b.HasIndex(x => x.ReferenceNumber).IsUnique();
             b.HasIndex(x => x.Email).IsUnique();
         });
 
