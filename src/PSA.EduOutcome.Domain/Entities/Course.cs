@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
-//using PSA.EduOutcome.Domain.Events;
+using EduOutcome.Domain.Events;
 
 namespace PSA.EduOutcome.Entities
 {
@@ -109,7 +109,7 @@ namespace PSA.EduOutcome.Entities
 
             LearningOutcomes.Add(learningOutcome);
             // Publish domain event for a new learning outcome added.
-            // AddDomainEvent(new LearningOutcomeAddedEvent(this.Id, learningOutcome.Id));
+            AddDomainEvent(new LearningOutcomeAddedEvent(this.Id, learningOutcome.Id));
         }
 
         public void RemoveLearningOutcome(Guid learningOutcomeId)
