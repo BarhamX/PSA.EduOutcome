@@ -18,7 +18,7 @@ using Volo.Abp.Uow;
 
 namespace PSA.EduOutcome.OpenIddict;
 
-/* Creates initial data that is needed to property run the application
+/* Creates initial data that is needed to properly run the application
  * and make client-to-server communication possible.
  */
 public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDependency
