@@ -17,8 +17,8 @@ The solution comes with a default configuration that works out of the box. Howev
 
 ### Before running the application
 
-* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `PSA.EduOutcome.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't specifically disable it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
+* Run `PSA.EduOutcome.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't specifically disable it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
 
 #### Generating a Signing Certificate
 

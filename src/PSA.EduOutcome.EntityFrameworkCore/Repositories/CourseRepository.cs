@@ -64,7 +64,7 @@ namespace PSA.EduOutcome.Courses
                 .ToListAsync();
         }
 
-        public async Task<List<Course>> GetElectiveCoursesAsync(Guid programId, int semester)
+        public async Task<List<Course>> GetElectiveCoursesAsync(Guid programId, string semester)
         {
             return await (await GetQueryableAsync())
                 .Where(c => c.ProgramId == programId &&

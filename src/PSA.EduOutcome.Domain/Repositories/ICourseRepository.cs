@@ -12,5 +12,6 @@ namespace PSA.EduOutcome.Domain.Repositories
         Task<List<Course>> GetCoursesByProgramAsync(Guid programId);
         Task<List<Course>> GetCoursesByInstructorAsync(Guid instructorId);
         Task<Course> FindByCodeAsync(string code);
+        Task<List<Course>> GetElectiveCoursesAsync(Guid programId, string semester);
     }
-} 
+}
