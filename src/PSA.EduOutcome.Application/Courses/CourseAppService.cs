@@ -113,8 +113,10 @@ namespace PSA.EduOutcome.Courses
                 TotalEnrollments = course.Enrollments.Count,
                 ActiveEnrollments = course.Enrollments.Count(e => e.Status == "Active"),
                 AverageGrade = course.Enrollments
-                    .Where(e => e.Grade.HasValue)
-                    .Average(e => e.Grade.Value),
+                    .Where(e => e.FinalGrade.HasValue)
+                    .Select(e => e.FinalGrade.Value)
+                    .DefaultIfEmpty(0)
+                    .Average(),
                 LearningOutcomesCovered = course.Questions
                     .SelectMany(q => q.LearningOutcomes)
                     .Distinct()

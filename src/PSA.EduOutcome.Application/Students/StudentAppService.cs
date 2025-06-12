@@ -121,8 +121,10 @@ namespace PSA.EduOutcome.Students
                 TotalCourses = student.Enrollments.Count,
                 CompletedCourses = student.Enrollments.Count(e => e.Status == "Completed"),
                 AverageGrade = student.Enrollments
-                    .Where(e => e.Grade.HasValue)
-                    .Average(e => e.Grade.Value),
+                    .Where(e => e.FinalGrade.HasValue)
+                    .Select(e => e.FinalGrade.Value)
+                    .DefaultIfEmpty(0)
+                    .Average(),
                 LearningOutcomesAchieved = student.Responses
                     .Count(r => r.IsCorrect)
             };
