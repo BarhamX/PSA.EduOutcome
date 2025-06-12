@@ -129,7 +129,7 @@ namespace PSA.EduOutcome.Courses
             return ObjectMapper.Map<List<Course>, List<CourseDto>>(prerequisites);
         }
 
-        public async Task<List<CourseDto>> GetElectiveCoursesAsync(Guid programId, int semester)
+        public async Task<List<CourseDto>> GetElectiveCoursesAsync(Guid programId, string semester)
         {
             var courses = await _courseRepository.GetElectiveCoursesAsync(programId, semester);
             return ObjectMapper.Map<List<Course>, List<CourseDto>>(courses);

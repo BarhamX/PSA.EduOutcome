@@ -39,7 +39,7 @@ namespace PSA.EduOutcome.Courses.Dtos
 
         public string PrerequisiteCourseName { get; set; }
 
-        public int Semester { get; set; }
+        public string Semester { get; set; }
 
         public int AcademicYear { get; set; }
     }

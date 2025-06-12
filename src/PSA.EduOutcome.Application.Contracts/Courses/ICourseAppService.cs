@@ -25,6 +25,6 @@ namespace PSA.EduOutcome.Courses
         Task ImportFromExcelAsync(byte[] fileContent);
         Task<CourseStatisticsDto> GetStatisticsAsync(Guid id);
         Task<List<CourseDto>> GetPrerequisitesAsync(Guid id);
-        Task<List<CourseDto>> GetElectiveCoursesAsync(Guid programId, int semester);
+        Task<List<CourseDto>> GetElectiveCoursesAsync(Guid programId, string semester);
     }
 } 
