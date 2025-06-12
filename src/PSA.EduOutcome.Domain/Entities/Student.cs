@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Guids;
 
 namespace PSA.EduOutcome.Entities
 {
@@ -44,7 +45,7 @@ namespace PSA.EduOutcome.Entities
         {
             var studentNumber = GenerateStudentNumber();
             return new Student(
-                GuidGenerator.Create(),
+                Guid.NewGuid(),
                 studentNumber,
                 firstName,
                 lastName,

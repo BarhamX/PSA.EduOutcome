@@ -1,3 +1,4 @@
+using System;
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp;
 using Volo.Abp.Authorization;
@@ -29,7 +30,11 @@ public class EduOutcomeTestBaseModule : AbpModule
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        SeedTestData(context);
+        var skipSeed = Environment.GetEnvironmentVariable("SKIP_DATA_SEED");
+        if (skipSeed != "true")
+        {
+            SeedTestData(context);
+        }
     }
 
     private static void SeedTestData(ApplicationInitializationContext context)

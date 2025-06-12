@@ -71,7 +71,7 @@ namespace PSA.EduOutcome.Entities
 
         public void SetQuestionType(string type)
         {
-            if (!QuestionType.IsValid(type))
+            if (!Entities.QuestionType.IsValid(type))
             {
                 throw new BusinessException($"Invalid question type: {type}");
             }
