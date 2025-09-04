@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular\\src\\app/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Application.Contracts\\DTOs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular\\src\\app/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Application.Contracts/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Application.Contracts/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular\\src\\app\\home/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular\\src\\app/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Application.Contracts/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Application.Contracts/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
