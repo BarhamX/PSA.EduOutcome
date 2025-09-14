@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PSA.EduOutcome.EntityFrameworkCore;
+using PSA.EduOutcome.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
@@ -131,49 +132,43 @@ namespace PSA.EduOutcome.Data
             var faculties = await _facultyRepository.GetListAsync();
             var fcs = faculties.First(f => f.Code == "FCS");
 
-            var courses = new[]
-            {
-                new Course
-                {
-                    Code = "CS101",
-                    Name = "Introduction to Programming",
-                    Description = "Basic programming concepts and problem-solving",
-                    Credits = 3,
-                    ProgramId = cs.Id,
-                    FacultyId = fcs.Id,
-                    Status = "Active",
-                    IsElective = false,
-                    Semester = 1,
-                    AcademicYear = 1
-                },
-                new Course
-                {
-                    Code = "CS102",
-                    Name = "Data Structures and Algorithms",
-                    Description = "Fundamental data structures and algorithms",
-                    Credits = 4,
-                    ProgramId = cs.Id,
-                    FacultyId = fcs.Id,
-                    Status = "Active",
-                    IsElective = false,
-                    PrerequisiteCourseId = 1, // CS101
-                    Semester = 2,
-                    AcademicYear = 1
-                },
-                new Course
-                {
-                    Code = "IT101",
-                    Name = "Introduction to Information Technology",
-                    Description = "Overview of IT concepts and applications",
-                    Credits = 3,
-                    ProgramId = it.Id,
-                    FacultyId = fcs.Id,
-                    Status = "Active",
-                    IsElective = false,
-                    Semester = 1,
-                    AcademicYear = 1
-                }
-            };
+            var course1 = new Course(
+                Guid.NewGuid(),
+                "Introduction to Programming",
+                "CS101",
+                3,
+                1,
+                2024,
+                cs.Id,
+                fcs.Id,
+                "Basic programming concepts and problem-solving"
+            );
+            
+            var course2 = new Course(
+                Guid.NewGuid(),
+                "Data Structures and Algorithms",
+                "CS102",
+                4,
+                2,
+                2024,
+                cs.Id,
+                fcs.Id,
+                "Fundamental data structures and algorithms"
+            );
+            
+            var course3 = new Course(
+                Guid.NewGuid(),
+                "Introduction to Information Technology",
+                "IT101",
+                3,
+                1,
+                2024,
+                it.Id,
+                fcs.Id,
+                "Overview of IT concepts and applications"
+            );
+            
+            var courses = new[] { course1, course2, course3 };
 
             foreach (var course in courses)
             {

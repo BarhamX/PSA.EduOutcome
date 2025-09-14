@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EduOutcome.Domain.Events;
+using PSA.EduOutcome.Domain.Events;
 using Volo.Abp.EventBus;
 
 namespace PSA.EduOutcome.EventHandlers

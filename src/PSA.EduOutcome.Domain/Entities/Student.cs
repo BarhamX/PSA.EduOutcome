@@ -44,7 +44,7 @@ namespace PSA.EduOutcome.Entities
         {
             var studentNumber = GenerateStudentNumber();
             return new Student(
-                GuidGenerator.Create(),
+                Guid.NewGuid(),
                 studentNumber,
                 firstName,
                 lastName,

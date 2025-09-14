@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.Application.Services;
 using PSA.EduOutcome.Controllers;
 using PSA.EduOutcome.Students;
 using PSA.EduOutcome.Students.Dtos;
@@ -18,8 +19,10 @@ public class StudentsController : EduOutcomeController
     }
 
     [HttpGet("{id}")]
-    public Task<StudentDto> Get(Guid id)
+    public async Task<StudentDto> Get(Guid id)
     {
-        return _studentAppService.GetAsync(id);
+        // Temporary fix - cast to base interface to access GetAsync
+        var crudService = _studentAppService as ICrudAppService<StudentDto, Guid>;
+        return await crudService.GetAsync(id);
     }
 }

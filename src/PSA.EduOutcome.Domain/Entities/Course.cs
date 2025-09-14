@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
-using EduOutcome.Domain.Events;
+using PSA.EduOutcome.Domain.Events;
 
 namespace PSA.EduOutcome.Entities
 {
@@ -13,10 +13,14 @@ namespace PSA.EduOutcome.Entities
         public string Code { get; private set; }
         public string Description { get; private set; }
         public int Credits { get; private set; }
-        public string Semester { get; private set; } // Fall, Spring, Summer
+        public int Semester { get; private set; } // 1, 2, 3 (Fall, Spring, Summer)
         public int Year { get; private set; }
         public Guid ProgramId { get; private set; }
+        public Guid FacultyId { get; private set; }
         public Guid? InstructorId { get; private set; } // Reference to Identity User
+        public string Status { get; private set; } // Active, Inactive, Archived
+        public bool IsElective { get; private set; }
+        public int AcademicYear { get; private set; }
         public bool IsActive { get; private set; }
 
         // Navigation properties
@@ -38,9 +42,10 @@ namespace PSA.EduOutcome.Entities
             string name,
             string code,
             int credits,
-            string semester,
+            int semester,
             int year,
             Guid programId,
+            Guid facultyId,
             string description = null) : base(id)
         {
             SetName(name);
@@ -49,7 +54,11 @@ namespace PSA.EduOutcome.Entities
             SetSemester(semester);
             SetYear(year);
             ProgramId = programId;
+            FacultyId = facultyId;
             Description = description;
+            Status = "Active";
+            IsElective = false;
+            AcademicYear = 1;
             IsActive = true;
             LearningOutcomes = new HashSet<LearningOutcome>();
             Assessments = new HashSet<Assessment>();
@@ -75,9 +84,13 @@ namespace PSA.EduOutcome.Entities
             Credits = credits;
         }
 
-        public void SetSemester(string semester)
+        public void SetSemester(int semester)
         {
-            Semester = Check.NotNullOrWhiteSpace(semester, nameof(semester), maxLength: 20);
+            if (semester <= 0)
+            {
+                throw new BusinessException("Semester must be greater than zero.");
+            }
+            Semester = semester;
         }
 
         public void SetYear(int year)
@@ -108,8 +121,7 @@ namespace PSA.EduOutcome.Entities
             }
 
             LearningOutcomes.Add(learningOutcome);
-            // Publish domain event for a new learning outcome added.
-            AddDomainEvent(new LearningOutcomeAddedEvent(this.Id, learningOutcome.Id));
+            // Domain events would be added here in a more advanced implementation
         }
 
         public void RemoveLearningOutcome(Guid learningOutcomeId)
@@ -149,6 +161,32 @@ namespace PSA.EduOutcome.Entities
         public void Deactivate()
         {
             IsActive = false;
+            Status = "Inactive";
+        }
+
+        public void Archive()
+        {
+            IsActive = false;
+            Status = "Archived";
+        }
+
+        public void SetStatus(string status)
+        {
+            Status = Check.NotNullOrWhiteSpace(status, nameof(status), maxLength: 50);
+        }
+
+        public void SetIsElective(bool isElective)
+        {
+            IsElective = isElective;
+        }
+
+        public void SetAcademicYear(int academicYear)
+        {
+            if (academicYear <= 0)
+            {
+                throw new BusinessException("Academic year must be greater than zero.");
+            }
+            AcademicYear = academicYear;
         }
     }
 }

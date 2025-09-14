@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PSA.EduOutcome.EntityFrameworkCore;
+using PSA.EduOutcome.Entities;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace PSA.EduOutcome.Students
 {
     public class StudentRepository : 
-        EfCoreRepository<EduOutcomeDbContext, Student, Guid>,
-        IStudentRepository
+        EfCoreRepository<EduOutcomeDbContext, Student, Guid>
+        // IStudentRepository - Commented out since using standard ABP repositories
     {
         public StudentRepository(IDbContextProvider<EduOutcomeDbContext> dbContextProvider)
             : base(dbContextProvider)

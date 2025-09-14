@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\Projects Repo)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

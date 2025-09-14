@@ -3,72 +3,78 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Application.Dtos;
-using PSA.EduOutcome.DTOs;
+using Volo.Abp.Domain.Repositories;
+using PSA.EduOutcome.Students;
+using PSA.EduOutcome.Students.Dtos;
 using PSA.EduOutcome.Entities;
-using PSA.EduOutcome.Domain.Repositories;
-using AutoMapper;
 
 namespace PSA.EduOutcome
 {
-    public class StudentAppService : ApplicationService, IStudentAppService
+    public class StudentAppService : CrudAppService<Student, StudentDto, Guid, GetStudentListDto, CreateStudentDto, UpdateStudentDto>, IStudentAppService
     {
-        private readonly IStudentRepository _studentRepository;
-        private readonly IMapper _mapper;
-
-        public StudentAppService(IStudentRepository studentRepository, IMapper mapper)
+        public StudentAppService(IRepository<Student, Guid> repository) : base(repository)
         {
-            _studentRepository = studentRepository;
-            _mapper = mapper;
         }
 
-        public async Task<StudentDto> GetAsync(Guid id)
+        // Additional methods specific to Student management
+        public async Task<StudentDto> GetByStudentNumberAsync(string studentNumber)
         {
-            var student = await _studentRepository.GetAsync(id);
-            return _mapper.Map<Student, StudentDto>(student);
+            // TODO: Implement GetByStudentNumberAsync
+            throw new NotImplementedException();
         }
 
-        public async Task<PagedResultDto<StudentDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public async Task<List<StudentDto>> GetByProgramAsync(Guid programId)
         {
-            var count = await _studentRepository.GetCountAsync();
-            var students = await _studentRepository.GetListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-            return new PagedResultDto<StudentDto>(count, _mapper.Map<List<Student>, List<StudentDto>>(students));
+            // TODO: Implement GetByProgramAsync
+            throw new NotImplementedException();
         }
 
-        public async Task<StudentDto> CreateAsync(CreateStudentDto input)
+        public async Task<StudentDto> GetByUserIdAsync(Guid userId)
         {
-            var student = Student.Create(
-                input.FirstName,
-                input.LastName,
-                input.Email,
-                input.DateOfBirth,
-                input.Gender,
-                input.ProgramId,
-                input.ReferenceNumber,
-                input.Phone
-            );
-            await _studentRepository.InsertAsync(student);
-            return _mapper.Map<Student, StudentDto>(student);
+            // TODO: Implement GetByUserIdAsync
+            throw new NotImplementedException();
         }
 
-        public async Task<StudentDto> UpdateAsync(Guid id, UpdateStudentDto input)
+        public async Task<StudentDto> GraduateAsync(Guid id)
         {
-            var student = await _studentRepository.GetAsync(id);
-            student.Update(
-                input.FirstName,
-                input.LastName,
-                input.Email,
-                input.Phone,
-                input.DateOfBirth,
-                input.Gender,
-                input.ProgramId
-            );
-            await _studentRepository.UpdateAsync(student);
-            return _mapper.Map<Student, StudentDto>(student);
+            // TODO: Implement GraduateAsync
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task<StudentDto> SuspendAsync(Guid id)
         {
-            await _studentRepository.DeleteAsync(id);
+            // TODO: Implement SuspendAsync
+            throw new NotImplementedException();
+        }
+
+        public async Task<StudentDto> WithdrawAsync(Guid id)
+        {
+            // TODO: Implement WithdrawAsync
+            throw new NotImplementedException();
+        }
+
+        public async Task<StudentDto> ReactivateAsync(Guid id)
+        {
+            // TODO: Implement ReactivateAsync
+            throw new NotImplementedException();
+        }
+
+        public async Task<byte[]> ExportToExcelAsync(GetStudentListDto input)
+        {
+            // TODO: Implement ExportToExcelAsync
+            throw new NotImplementedException();
+        }
+
+        public async Task ImportFromExcelAsync(byte[] fileContent)
+        {
+            // TODO: Implement ImportFromExcelAsync
+            throw new NotImplementedException();
+        }
+
+        public async Task<StudentStatisticsDto> GetStatisticsAsync(Guid id)
+        {
+            // TODO: Implement GetStatisticsAsync
+            throw new NotImplementedException();
         }
     }
 } 

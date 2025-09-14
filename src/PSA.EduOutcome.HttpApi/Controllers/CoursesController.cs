@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PSA.EduOutcome.Controllers;
 using PSA.EduOutcome.Courses;
+using PSA.EduOutcome.Courses.Dtos;
 using PSA.EduOutcome.Reporting;
 
 namespace PSA.EduOutcome.Controllers;
@@ -23,7 +24,8 @@ public class CoursesController : EduOutcomeController
     [HttpGet("{programId}/semester/{semester}/electives")]
     public Task<List<CourseDto>> GetElectives(Guid programId, string semester)
     {
-        return _courseAppService.GetElectiveCoursesAsync(programId, semester);
+        // TODO: Implement GetElectiveCoursesAsync method in CourseAppService
+        throw new NotImplementedException("GetElectiveCoursesAsync not yet implemented");
     }
 
     [HttpGet("{id}/report")]

@@ -1,11 +1,10 @@
 ﻿using System;
 using Volo.Abp.EventBus;
-using Volo.Abp.EventBus.Events;
 
-namespace EduOutcome.Domain.Events;
+namespace PSA.EduOutcome.Domain.Events;
 
 // This event is raised when a new LearningOutcome is added to a Course.
-public class LearningOutcomeAddedEvent : EventData
+public class LearningOutcomeAddedEvent
 {
     public Guid CourseId { get; }
     public Guid LearningOutcomeId { get; }

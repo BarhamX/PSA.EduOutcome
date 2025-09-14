@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using PSA.EduOutcome.Entities;
 using PSA.EduOutcome.Permissions;
 using PSA.EduOutcome.Students.Dtos;
 using Volo.Abp;
@@ -25,15 +26,13 @@ namespace PSA.EduOutcome.Students
             UpdateStudentDto>,
         IStudentAppService
     {
-        private readonly IStudentRepository _studentRepository;
         private readonly ILogger<StudentAppService> _logger;
 
         public StudentAppService(
-            IStudentRepository studentRepository,
+            IRepository<Student, Guid> repository,
             ILogger<StudentAppService> logger) 
-            : base(studentRepository)
+            : base(repository)
         {
-            _studentRepository = studentRepository;
             _logger = logger;
 
             GetPolicyName = EduOutcomePermissions.Students.Default;
@@ -45,62 +44,57 @@ namespace PSA.EduOutcome.Students
 
         public async Task<StudentDto> GetByStudentNumberAsync(string studentNumber)
         {
-            var student = await _studentRepository.GetByStudentNumberAsync(studentNumber);
+            var student = await Repository.FirstOrDefaultAsync(s => s.StudentNumber == studentNumber);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
 
         public async Task<List<StudentDto>> GetByProgramAsync(Guid programId)
         {
-            var students = await _studentRepository.GetListByProgramAsync(programId);
+            var students = await Repository.GetListAsync(s => s.ProgramId == programId);
             return ObjectMapper.Map<List<Student>, List<StudentDto>>(students);
         }
 
         public async Task<StudentDto> GetByUserIdAsync(Guid userId)
         {
-            var student = await _studentRepository.GetByUserIdAsync(userId);
+            var student = await Repository.FirstOrDefaultAsync(s => s.UserId == userId);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
 
         public async Task<StudentDto> GraduateAsync(Guid id)
         {
-            var student = await _studentRepository.GetAsync(id);
+            var student = await Repository.GetAsync(id);
             student.Graduate();
-            await _studentRepository.UpdateAsync(student);
+            await Repository.UpdateAsync(student);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
 
         public async Task<StudentDto> SuspendAsync(Guid id)
         {
-            var student = await _studentRepository.GetAsync(id);
+            var student = await Repository.GetAsync(id);
             student.Suspend();
-            await _studentRepository.UpdateAsync(student);
+            await Repository.UpdateAsync(student);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
 
         public async Task<StudentDto> WithdrawAsync(Guid id)
         {
-            var student = await _studentRepository.GetAsync(id);
+            var student = await Repository.GetAsync(id);
             student.Withdraw();
-            await _studentRepository.UpdateAsync(student);
+            await Repository.UpdateAsync(student);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
 
         public async Task<StudentDto> ReactivateAsync(Guid id)
         {
-            var student = await _studentRepository.GetAsync(id);
+            var student = await Repository.GetAsync(id);
             student.Reactivate();
-            await _studentRepository.UpdateAsync(student);
+            await Repository.UpdateAsync(student);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
 
         public async Task<byte[]> ExportToExcelAsync(GetStudentListDto input)
         {
-            var students = await _studentRepository.GetListAsync(
-                input.Filter,
-                input.Sorting,
-                input.MaxResultCount,
-                input.SkipCount
-            );
+            var students = await Repository.GetListAsync();
 
             // TODO: Implement Excel export using a library like EPPlus or ClosedXML
             throw new NotImplementedException("Excel export not implemented yet");
@@ -114,19 +108,15 @@ namespace PSA.EduOutcome.Students
 
         public async Task<StudentStatisticsDto> GetStatisticsAsync(Guid id)
         {
-            var student = await _studentRepository.GetWithDetailsAsync(id);
+            var student = await Repository.GetAsync(id);
             
+            // TODO: Implement statistics calculation when enrollment and response entities are available
             return new StudentStatisticsDto
             {
-                TotalCourses = student.Enrollments.Count,
-                CompletedCourses = student.Enrollments.Count(e => e.Status == "Completed"),
-                AverageGrade = student.Enrollments
-                    .Where(e => e.FinalGrade.HasValue)
-                    .Select(e => e.FinalGrade.Value)
-                    .DefaultIfEmpty(0)
-                    .Average(),
-                LearningOutcomesAchieved = student.Responses
-                    .Count(r => r.IsCorrect)
+                TotalCourses = 0,
+                CompletedCourses = 0,
+                AverageGrade = 0,
+                LearningOutcomesAchieved = 0
             };
         }
 
