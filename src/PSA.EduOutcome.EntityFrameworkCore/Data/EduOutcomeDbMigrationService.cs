@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,21 +60,25 @@ namespace PSA.EduOutcome.Data
                 return;
             }
 
-            var faculties = new[]
-            {
-                new Faculty
-                {
-                    Name = "Faculty of Computer Science",
-                    Code = "FCS",
-                    Description = "Faculty of Computer Science and Information Technology"
-                },
-                new Faculty
-                {
-                    Name = "Faculty of Engineering",
-                    Code = "FE",
-                    Description = "Faculty of Engineering and Technology"
-                }
-            };
+            var university1 = Guid.NewGuid(); // Default university for seeding
+            
+            var faculty1 = new Faculty(
+                Guid.NewGuid(),
+                "Faculty of Computer Science",
+                "FCS",
+                university1,
+                "Faculty of Computer Science and Information Technology"
+            );
+            
+            var faculty2 = new Faculty(
+                Guid.NewGuid(),
+                "Faculty of Engineering",
+                "FE",
+                university1,
+                "Faculty of Engineering and Technology"
+            );
+            
+            var faculties = new[] { faculty1, faculty2 };
 
             foreach (var faculty in faculties)
             {
@@ -93,23 +98,29 @@ namespace PSA.EduOutcome.Data
             var faculties = await _facultyRepository.GetListAsync();
             var fcs = faculties.First(f => f.Code == "FCS");
 
-            var programs = new[]
-            {
-                new Program
-                {
-                    Name = "Computer Science",
-                    Code = "CS",
-                    Description = "Bachelor of Science in Computer Science",
-                    FacultyId = fcs.Id
-                },
-                new Program
-                {
-                    Name = "Information Technology",
-                    Code = "IT",
-                    Description = "Bachelor of Science in Information Technology",
-                    FacultyId = fcs.Id
-                }
-            };
+            var program1 = new Program(
+                Guid.NewGuid(),
+                "Computer Science",
+                "CS",
+                "Bachelor",
+                8, // 4 years = 8 semesters
+                120, // Total credits
+                fcs.Id,
+                "Bachelor of Science in Computer Science"
+            );
+            
+            var program2 = new Program(
+                Guid.NewGuid(),
+                "Information Technology",
+                "IT",
+                "Bachelor",
+                8, // 4 years = 8 semesters
+                120, // Total credits
+                fcs.Id,
+                "Bachelor of Science in Information Technology"
+            );
+            
+            var programs = new[] { program1, program2 };
 
             foreach (var program in programs)
             {

@@ -11,7 +11,7 @@ namespace PSA.EduOutcome.EntityFrameworkCore.Configurations
             builder.ToTable("Enrollments");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Status).IsRequired();
-            builder.Property(e => e.EnrolledAt).IsRequired();
+            builder.Property(e => e.EnrollmentDate).IsRequired();
         }
     }
 } 

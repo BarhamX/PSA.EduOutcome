@@ -74,7 +74,21 @@
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Application.Contracts\\Permissions/**)",
-      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Data/**)"
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Data/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Data/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Data/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Data/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\EntityFrameworkCore\\Configurations/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\EntityFrameworkCore\\Configurations/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.Domain\\Entities/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\test\\PSA.EduOutcome.EntityFrameworkCore.Tests\\EntityFrameworkCore\\Domains/**)"
     ],
     "deny": [],
     "ask": []

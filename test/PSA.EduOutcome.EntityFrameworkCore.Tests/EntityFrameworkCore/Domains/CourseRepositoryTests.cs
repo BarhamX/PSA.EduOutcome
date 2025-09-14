@@ -3,13 +3,15 @@ using System.Threading.Tasks;
 using Shouldly;
 using Volo.Abp.Domain.Repositories;
 using Xunit;
+using PSA.EduOutcome.Entities;
+using PSA.EduOutcome.Courses;
 
 namespace PSA.EduOutcome.EntityFrameworkCore.Domains;
 
 [Collection(EduOutcomeTestConsts.CollectionDefinitionName)]
 public class CourseRepositoryTests : EduOutcomeEntityFrameworkCoreTestBase
 {
-    private readonly ICourseRepository _courseRepository;
+    private readonly CourseRepository _courseRepository;
     private readonly IRepository<Course, Guid> _courseRepo;
     private readonly IRepository<Program, Guid> _programRepo;
     private readonly IRepository<Faculty, Guid> _facultyRepo;
@@ -17,7 +19,7 @@ public class CourseRepositoryTests : EduOutcomeEntityFrameworkCoreTestBase
 
     public CourseRepositoryTests()
     {
-        _courseRepository = GetRequiredService<ICourseRepository>();
+        _courseRepository = GetRequiredService<CourseRepository>();
         _courseRepo = GetRequiredService<IRepository<Course, Guid>>();
         _programRepo = GetRequiredService<IRepository<Program, Guid>>();
         _facultyRepo = GetRequiredService<IRepository<Faculty, Guid>>();
@@ -33,12 +35,12 @@ public class CourseRepositoryTests : EduOutcomeEntityFrameworkCoreTestBase
             var uni = await _universityRepo.InsertAsync(new University(Guid.NewGuid(), "Test Uni", "TU"));
             var fac = await _facultyRepo.InsertAsync(new Faculty(Guid.NewGuid(), "Fac", "FAC", uni.Id));
             await _programRepo.InsertAsync(new Program(programId, "Prog", "PRG", "BSc", 8, 120, fac.Id));
-            await _courseRepo.InsertAsync(new Course(Guid.NewGuid(), "Course1", "C1", 3, "Fall", 2024, programId));
-            await _courseRepo.InsertAsync(new Course(Guid.NewGuid(), "Course2", "C2", 3, "Spring", 2024, programId));
+            await _courseRepo.InsertAsync(new Course(Guid.NewGuid(), "Course1", "C1", 3, 1, 2024, programId, fac.Id, "Course 1 desc"));
+            await _courseRepo.InsertAsync(new Course(Guid.NewGuid(), "Course2", "C2", 3, 2, 2024, programId, fac.Id, "Course 2 desc"));
         });
 
-        var result = await WithUnitOfWorkAsync(() => _courseRepository.GetElectiveCoursesAsync(programId, "Fall"));
+        var result = await WithUnitOfWorkAsync(() => _courseRepository.GetElectiveCoursesAsync(programId, "1"));
 
-        result.ShouldAllBe(c => c.Semester == "Fall");
+        result.ShouldAllBe(c => c.Semester == 1);
     }
 }

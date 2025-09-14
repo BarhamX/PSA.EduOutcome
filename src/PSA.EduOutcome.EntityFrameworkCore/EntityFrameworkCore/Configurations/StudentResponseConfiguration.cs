@@ -10,8 +10,8 @@ namespace PSA.EduOutcome.EntityFrameworkCore.Configurations
         {
             builder.ToTable("StudentResponses");
             builder.HasKey(sr => sr.Id);
-            builder.Property(sr => sr.Grade).IsRequired();
-            builder.Property(sr => sr.Comment).HasMaxLength(1000);
+            builder.Property(sr => sr.AchievedMark).IsRequired();
+            builder.Property(sr => sr.GraderComments).HasMaxLength(1000);
         }
     }
 } 
