@@ -88,7 +88,18 @@
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\src\\PSA.EduOutcome.EntityFrameworkCore\\Repositories/**)",
-      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\test\\PSA.EduOutcome.EntityFrameworkCore.Tests\\EntityFrameworkCore\\Domains/**)"
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\test\\PSA.EduOutcome.EntityFrameworkCore.Tests\\EntityFrameworkCore\\Domains/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\docs/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular\\src\\app/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular/**)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular/**)",
+      "Bash(npm install:*)",
+      "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular/**)",
+      "Bash(dotnet tool install:*)",
+      "Bash(abp generate-proxy:*)",
+      "Bash(dotnet run:*)"
     ],
     "deny": [],
     "ask": []
