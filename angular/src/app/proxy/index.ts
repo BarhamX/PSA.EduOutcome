@@ -1,0 +1,10 @@
+import * as Assessments from './assessments';
+import * as Controllers from './controllers';
+import * as Courses from './courses';
+import * as Dtos from './dtos';
+import * as LearningOutcomes from './learning-outcomes';
+import * as Reporting from './reporting';
+import * as Students from './students';
+export * from './models';
+export * from './student.service';
+export { Assessments, Controllers, Courses, Dtos, LearningOutcomes, Reporting, Students };

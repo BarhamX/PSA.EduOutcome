@@ -15,6 +15,14 @@ function configureRoutes(routes: RoutesService) {
         order: 1,
         layout: eLayoutType.application,
       },
+      {
+        path: '/learning-outcomes',
+        name: 'Learning Outcomes',
+        iconClass: 'fas fa-graduation-cap',
+        order: 2,
+        layout: eLayoutType.application,
+        requiredPolicy: 'EduOutcome.LearningOutcomes',
+      },
     ]);
   };
 }

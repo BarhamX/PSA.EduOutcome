@@ -1,0 +1,215 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="card-title mb-0">
+          <i class="fas fa-graduation-cap me-2"></i>
+          {{ pageTitle }}
+        </h5>
+      </div>
+      <div class="col-auto">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a routerLink="/learning-outcomes" class="text-decoration-none">
+                Learning Outcomes
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ isEditMode ? 'Edit' : 'Create' }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Code -->
+        <div class="col-md-6 mb-3">
+          <label for="code" class="form-label">
+            Code <span class="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            id="code"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('code')"
+            formControlName="code"
+            placeholder="e.g., LO1, OUT-01"
+          />
+          <div *ngIf="isFieldInvalid('code')" class="invalid-feedback">
+            {{ getFieldError('code') }}
+          </div>
+          <div class="form-text">
+            A unique identifier for this learning outcome within the course
+          </div>
+        </div>
+
+        <!-- Display Order -->
+        <div class="col-md-6 mb-3">
+          <label for="displayOrder" class="form-label">
+            Display Order <span class="text-danger">*</span>
+          </label>
+          <input
+            type="number"
+            id="displayOrder"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('displayOrder')"
+            formControlName="displayOrder"
+            min="1"
+          />
+          <div *ngIf="isFieldInvalid('displayOrder')" class="invalid-feedback">
+            {{ getFieldError('displayOrder') }}
+          </div>
+          <div class="form-text">
+            Order in which this outcome appears in the course
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Course -->
+        <div class="col-md-6 mb-3">
+          <label for="courseId" class="form-label">
+            Course <span class="text-danger">*</span>
+          </label>
+          <select
+            id="courseId"
+            class="form-select"
+            [class.is-invalid]="isFieldInvalid('courseId')"
+            formControlName="courseId"
+            (change)="onCourseChange()"
+          >
+            <option value="">Select a course</option>
+            <option *ngFor="let course of courses" [value]="course.id">
+              {{ course.code }} - {{ course.name }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('courseId')" class="invalid-feedback">
+            {{ getFieldError('courseId') }}
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="col-md-6 mb-3">
+          <label for="category" class="form-label">
+            Category <span class="text-danger">*</span>
+          </label>
+          <select
+            id="category"
+            class="form-select"
+            [class.is-invalid]="isFieldInvalid('category')"
+            formControlName="category"
+          >
+            <option *ngFor="let cat of categories" [value]="cat.value">
+              {{ cat.label }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('category')" class="invalid-feedback">
+            {{ getFieldError('category') }}
+          </div>
+          <div class="form-text">
+            Bloom's taxonomy category for this learning outcome
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">
+          Description <span class="text-danger">*</span>
+        </label>
+        <textarea
+          id="description"
+          class="form-control"
+          [class.is-invalid]="isFieldInvalid('description')"
+          formControlName="description"
+          rows="4"
+          placeholder="Describe what students should be able to do after achieving this learning outcome..."
+        ></textarea>
+        <div *ngIf="isFieldInvalid('description')" class="invalid-feedback">
+          {{ getFieldError('description') }}
+        </div>
+        <div class="form-text">
+          Clear, measurable statement of what students will learn
+        </div>
+      </div>
+
+      <!-- Max Mark -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="maxMark" class="form-label">
+            Maximum Mark <span class="text-danger">*</span>
+          </label>
+          <div class="input-group">
+            <input
+              type="number"
+              id="maxMark"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('maxMark')"
+              formControlName="maxMark"
+              min="1"
+              max="100"
+              step="0.5"
+            />
+            <span class="input-group-text">points</span>
+          </div>
+          <div *ngIf="isFieldInvalid('maxMark')" class="invalid-feedback">
+            {{ getFieldError('maxMark') }}
+          </div>
+          <div class="form-text">
+            Total marks allocated to this learning outcome (1-100 points)
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Validation Warning -->
+      <div class="alert alert-warning" *ngIf="form.get('courseId')?.value">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Important:</strong>
+        The total marks for all learning outcomes in a course must equal 100 points.
+        The system will validate this when you save.
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="row">
+        <div class="col">
+          <div class="d-flex justify-content-between">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="cancel()"
+              [disabled]="saving"
+            >
+              <i class="fas fa-times me-1"></i>
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid || saving"
+            >
+              <span *ngIf="saving" class="spinner-border spinner-border-sm me-1" role="status">
+                <span class="visually-hidden">Saving...</span>
+              </span>
+              <i *ngIf="!saving" class="fas" [class.fa-plus]="!isEditMode" [class.fa-save]="isEditMode" class="me-1"></i>
+              {{ submitButtonText }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <h5 class="card-title mb-0">
+          <i class="fas fa-graduation-cap me-2"></i>
+          Learning Outcomes Management
+        </h5>
+      </div>
+      <div class="col-auto">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="createNew()"
+        >
+          <i class="fas fa-plus me-1"></i>
+          New Learning Outcome
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <!-- Filters -->
+    <div class="row mb-3" [formGroup]="filterForm">
+      <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by code or description..."
+          formControlName="filter"
+        />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Course</label>
+        <select class="form-select" formControlName="courseId">
+          <option value="">All Courses</option>
+          <option *ngFor="let course of courses" [value]="course.id">
+            {{ course.code }} - {{ course.name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Category</label>
+        <select class="form-select" formControlName="category">
+          <option *ngFor="let cat of categories" [value]="cat.value">
+            {{ cat.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button
+          type="button"
+          class="btn btn-outline-secondary me-2"
+          (click)="clearFilters()"
+          title="Clear Filters"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-success"
+          (click)="exportToExcel()"
+          title="Export to Excel"
+        >
+          <i class="fas fa-file-excel"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Learning Outcomes Table -->
+    <div *ngIf="!loading" class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th>Course</th>
+            <th>Category</th>
+            <th>Max Mark</th>
+            <th>Display Order</th>
+            <th>Status</th>
+            <th width="120">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let outcome of data.items; trackBy: trackByFn">
+            <td>
+              <strong>{{ outcome.code }}</strong>
+            </td>
+            <td>
+              <span [title]="outcome.description">
+                {{ outcome.description | slice:0:50 }}
+                <span *ngIf="outcome.description.length > 50">...</span>
+              </span>
+            </td>
+            <td>
+              {{ getCourseName(outcome.courseId) }}
+            </td>
+            <td>
+              <span class="badge bg-info">{{ outcome.category }}</span>
+            </td>
+            <td>
+              <span class="badge bg-primary">{{ outcome.maxMark }} pts</span>
+            </td>
+            <td>
+              {{ outcome.displayOrder }}
+            </td>
+            <td>
+              <span
+                class="badge"
+                [class.bg-success]="outcome.isActive"
+                [class.bg-secondary]="!outcome.isActive"
+              >
+                {{ outcome.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group" role="group">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-info"
+                  (click)="view(outcome.id)"
+                  title="View Details"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-warning"
+                  (click)="edit(outcome.id)"
+                  title="Edit"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="delete(outcome.id, outcome.code)"
+                  title="Delete"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div *ngIf="data.items?.length === 0" class="text-center py-5">
+        <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No Learning Outcomes Found</h5>
+        <p class="text-muted">
+          {{ filterForm.get('filter')?.value || filterForm.get('courseId')?.value || filterForm.get('category')?.value
+             ? 'Try adjusting your filters or create a new learning outcome.'
+             : 'Get started by creating your first learning outcome.' }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="!loading && totalCount > 0" class="row mt-3">
+      <div class="col-sm-6">
+        <div class="d-flex align-items-center">
+          <span class="me-2">Show:</span>
+          <select
+            class="form-select form-select-sm"
+            style="width: auto;"
+            [value]="maxResultCount"
+            (change)="onPageSizeChange(+$event.target.value)"
+          >
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span class="ms-2">
+            Showing {{ (skipCount + 1) }} to {{ Math.min(skipCount + maxResultCount, totalCount) }}
+            of {{ totalCount }} results
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <ngb-pagination
+          class="d-flex justify-content-end"
+          [(page)]="currentPage"
+          [pageSize]="maxResultCount"
+          [collectionSize]="totalCount"
+          (pageChange)="onPageChange($event)"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

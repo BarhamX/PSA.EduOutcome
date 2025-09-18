@@ -3,6 +3,10 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgxValidateCoreModule } from '@ngx-validate/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+// BaseApiService is no longer needed as ABP proxy services handle API calls
 
 @NgModule({
   declarations: [],
@@ -10,14 +14,22 @@ import { NgxValidateCoreModule } from '@ngx-validate/core';
     CoreModule,
     ThemeSharedModule,
     NgbDropdownModule,
-    NgxValidateCoreModule
+    NgxValidateCoreModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     CoreModule,
     ThemeSharedModule,
     NgbDropdownModule,
-    NgxValidateCoreModule
+    NgxValidateCoreModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
-  providers: []
+  providers: [
+    // ABP proxy services are automatically provided via @Injectable({ providedIn: 'root' })
+  ]
 })
 export class SharedModule {}

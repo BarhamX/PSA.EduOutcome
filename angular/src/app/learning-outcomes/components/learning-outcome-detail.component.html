@@ -1,0 +1,258 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="card-title mb-0">
+          <i class="fas fa-graduation-cap me-2"></i>
+          Learning Outcome Details
+        </h5>
+      </div>
+      <div class="col-auto">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a routerLink="/learning-outcomes" class="text-decoration-none">
+                Learning Outcomes
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ learningOutcome?.code }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Learning Outcome Details -->
+    <div *ngIf="!loading && learningOutcome">
+      <!-- Basic Information -->
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <div class="card border-light">
+            <div class="card-header bg-light">
+              <h6 class="card-subtitle mb-0">
+                <i class="fas fa-info-circle me-2"></i>
+                Basic Information
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Code:</strong>
+                </div>
+                <div class="col-sm-9">
+                  <span class="badge bg-primary fs-6">{{ learningOutcome.code }}</span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Description:</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ learningOutcome.description }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Category:</strong>
+                </div>
+                <div class="col-sm-9">
+                  <span class="badge bg-info">{{ learningOutcome.category }}</span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Maximum Mark:</strong>
+                </div>
+                <div class="col-sm-9">
+                  <span class="badge bg-success">{{ learningOutcome.maxMark }} points</span>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Display Order:</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ learningOutcome.displayOrder }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <strong>Status:</strong>
+                </div>
+                <div class="col-sm-9">
+                  <span class="badge" [class]="getStatusClass(learningOutcome.isActive)">
+                    {{ getStatusText(learningOutcome.isActive) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <!-- Course Information -->
+          <div class="card border-light">
+            <div class="card-header bg-light">
+              <h6 class="card-subtitle mb-0">
+                <i class="fas fa-book me-2"></i>
+                Course Information
+              </h6>
+            </div>
+            <div class="card-body">
+              <div *ngIf="course">
+                <div class="mb-2">
+                  <strong>Course:</strong><br>
+                  <span class="badge bg-secondary">{{ course.code }}</span>
+                </div>
+                <div class="mb-2">
+                  <strong>Title:</strong><br>
+                  {{ course.name }}
+                </div>
+                <div class="mb-2">
+                  <strong>Credits:</strong>
+                  <span class="badge bg-outline-primary">{{ course.credits }} credits</span>
+                </div>
+                <div>
+                  <strong>Semester:</strong>
+                  {{ course.semester }} / {{ course.year }}
+                </div>
+              </div>
+              <div *ngIf="!course" class="text-muted">
+                Loading course information...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Mappings -->
+      <div class="card border-light mb-4">
+        <div class="card-header bg-light">
+          <h6 class="card-subtitle mb-0">
+            <i class="fas fa-question-circle me-2"></i>
+            Question Mappings
+            <span class="badge bg-secondary ms-2">{{ learningOutcome.totalQuestions }}</span>
+          </h6>
+        </div>
+        <div class="card-body">
+          <div *ngIf="learningOutcome.questionMappings?.length === 0" class="text-center py-4">
+            <i class="fas fa-question-circle fa-2x text-muted mb-3"></i>
+            <p class="text-muted mb-0">No questions are mapped to this learning outcome yet.</p>
+          </div>
+
+          <div *ngIf="learningOutcome.questionMappings?.length > 0" class="table-responsive">
+            <table class="table table-sm table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Assessment</th>
+                  <th>Question</th>
+                  <th>Allocated Mark</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mapping of learningOutcome.questionMappings">
+                  <td>
+                    <strong>{{ mapping.assessmentTitle }}</strong>
+                  </td>
+                  <td>
+                    <span [title]="mapping.questionText">
+                      {{ mapping.questionText | slice:0:60 }}
+                      <span *ngIf="mapping.questionText.length > 60">...</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-primary">{{ mapping.allocatedMark }} pts</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-info">{{ mapping.percentage | number:'1.1-1' }}%</span>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot class="table-light">
+                <tr>
+                  <th colspan="2">Total Allocated Marks</th>
+                  <th>
+                    <span class="badge bg-success">{{ learningOutcome.totalAllocatedMarks }} pts</span>
+                  </th>
+                  <th>
+                    <span class="badge bg-success">
+                      {{ (learningOutcome.totalAllocatedMarks / learningOutcome.maxMark * 100) | number:'1.1-1' }}%
+                    </span>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timestamps -->
+      <div class="card border-light">
+        <div class="card-header bg-light">
+          <h6 class="card-subtitle mb-0">
+            <i class="fas fa-clock me-2"></i>
+            Audit Information
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <small class="text-muted">
+                <strong>Created:</strong><br>
+                {{ learningOutcome.creationTime | date:'medium' }}
+              </small>
+            </div>
+            <div class="col-md-6" *ngIf="learningOutcome.lastModificationTime">
+              <small class="text-muted">
+                <strong>Last Modified:</strong><br>
+                {{ learningOutcome.lastModificationTime | date:'medium' }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4">
+      <div class="col">
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="back()"
+          >
+            <i class="fas fa-arrow-left me-1"></i>
+            Back to List
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="edit()"
+            *ngIf="learningOutcome"
+          >
+            <i class="fas fa-edit me-1"></i>
+            Edit Learning Outcome
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

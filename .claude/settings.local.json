@@ -99,7 +99,15 @@
       "Read(/C:\\Projects Repo\\PSA.EduOutcome\\angular/**)",
       "Bash(dotnet tool install:*)",
       "Bash(abp generate-proxy:*)",
-      "Bash(dotnet run:*)"
+      "Bash(dotnet run:*)",
+      "Bash(dotnet ef database update:*)",
+      "Bash(timeout:*)",
+      "Bash(npm start)",
+      "Bash(taskkill:*)",
+      "Bash(ng serve:*)",
+      "Bash(curl:*)",
+      "Bash(\"taskkill\" \"/f\" \"/im\" \"iisexpress.exe\")",
+      "Bash(wmic process where:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,15 +1,11 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using OpenIddict.Server.AspNetCore;
-using OpenIddict.Validation.AspNetCore;
 using PSA.EduOutcome.EntityFrameworkCore;
 using PSA.EduOutcome.HealthChecks;
 using PSA.EduOutcome.MultiTenancy;
@@ -19,8 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Volo.Abp;
-using Volo.Abp.Account;
-using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.Libs;
@@ -33,8 +27,6 @@ using Volo.Abp.Autofac;
 using Volo.Abp.Identity;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
-using Volo.Abp.OpenIddict;
-using Volo.Abp.Security.Claims;
 using Volo.Abp.Studio;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Swashbuckle;
@@ -51,7 +43,6 @@ namespace PSA.EduOutcome;
     typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(EduOutcomeApplicationModule),
     typeof(EduOutcomeEntityFrameworkCoreModule),
-    typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule)
     )]
@@ -62,29 +53,7 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
-        PreConfigure<OpenIddictBuilder>(builder =>
-        {
-            builder.AddValidation(options =>
-            {
-                options.AddAudiences("EduOutcome");
-                options.UseLocalServer();
-                options.UseAspNetCore();
-            });
-        });
-
-        if (!hostingEnvironment.IsDevelopment())
-        {
-            PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
-            {
-                options.AddDevelopmentEncryptionAndSigningCertificate = false;
-            });
-
-            PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
-            {
-                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
-                serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
-            });
-        }
+        // OpenIddict authentication disabled for development
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -101,20 +70,7 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         {
             options.CheckLibs = false;
         });
-        if (!configuration.GetValue<bool>("AuthServer:RequireHttpsMetadata"))
-        {
-            Configure<OpenIddictServerAspNetCoreOptions>(options =>
-            {
-                options.DisableTransportSecurityRequirement = true;
-            });
-            
-            Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
-            });
-        }
-
-        ConfigureAuthentication(context);
+        // Authentication disabled for development
         ConfigureUrls(configuration);
         ConfigureBundles();
         ConfigureConventionalControllers();
@@ -123,14 +79,7 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         ConfigureCors(context, configuration);
     }
 
-    private void ConfigureAuthentication(ServiceConfigurationContext context)
-    {
-        context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
-        context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
-        {
-            options.IsDynamicClaimsEnabled = true;
-        });
-    }
+    // Authentication configuration removed for development
 
     private void ConfigureUrls(IConfiguration configuration)
     {
@@ -138,7 +87,6 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         {
             options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
             options.Applications["Angular"].RootUrl = configuration["App:AngularUrl"];
-            options.Applications["Angular"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
             options.RedirectAllowedUrls.AddRange(configuration["App:RedirectAllowedUrls"]?.Split(',') ?? Array.Empty<string>());
         });
     }
@@ -185,11 +133,7 @@ public class EduOutcomeHttpApiHostModule : AbpModule
 
     private static void ConfigureSwagger(ServiceConfigurationContext context, IConfiguration configuration)
     {
-        context.Services.AddAbpSwaggerGenWithOidc(
-            configuration["AuthServer:Authority"]!,
-            ["EduOutcome"],
-            [AbpSwaggerOidcFlows.AuthorizationCode],
-            null,
+        context.Services.AddAbpSwaggerGen(
             options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "EduOutcome API", Version = "v1" });
@@ -244,8 +188,7 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         app.UseRouting();
         app.UseAbpSecurityHeaders();
         app.UseCors();
-        app.UseAuthentication();
-        app.UseAbpOpenIddictValidation();
+        // Authentication middleware disabled for development
 
         if (MultiTenancyConsts.IsEnabled)
         {
@@ -260,9 +203,6 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         app.UseAbpSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "EduOutcome API");
-
-            var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
-            options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
         });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();

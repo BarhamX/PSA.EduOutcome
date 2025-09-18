@@ -9,6 +9,14 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
   },
   {
+    path: 'learning-outcomes',
+    loadChildren: () => import('./learning-outcomes/learning-outcomes.module').then(m => m.LearningOutcomesModule),
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: 'EduOutcome.LearningOutcomes',
+    },
+  },
+  {
     path: 'account',
     loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
   },
