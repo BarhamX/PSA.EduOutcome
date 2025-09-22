@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using PSA.EduOutcome.Domain.Services;
 using PSA.EduOutcome.Entities;
 using PSA.EduOutcome.Permissions;
 using PSA.EduOutcome.Students.Dtos;
@@ -16,7 +17,7 @@ using Volo.Abp.ObjectMapping;
 namespace PSA.EduOutcome.Students
 {
     [Authorize]
-    public class StudentAppService : 
+    public class StudentAppService :
         CrudAppService<
             Student,
             StudentDto,
@@ -26,14 +27,28 @@ namespace PSA.EduOutcome.Students
             UpdateStudentDto>,
         IStudentAppService
     {
+        private const decimal OutcomeAchievementThreshold = 70m;
+
         private readonly ILogger<StudentAppService> _logger;
+        private readonly IRepository<Enrollment, Guid> _enrollmentRepository;
+        private readonly ILearningOutcomeCalculationService _learningOutcomeCalculationService;
+        private readonly IRepository<Course, Guid> _courseRepository;
+        private readonly IRepository<LearningOutcome, Guid> _learningOutcomeRepository;
 
         public StudentAppService(
             IRepository<Student, Guid> repository,
-            ILogger<StudentAppService> logger) 
+            ILogger<StudentAppService> logger,
+            IRepository<Enrollment, Guid> enrollmentRepository,
+            ILearningOutcomeCalculationService learningOutcomeCalculationService,
+            IRepository<Course, Guid> courseRepository,
+            IRepository<LearningOutcome, Guid> learningOutcomeRepository)
             : base(repository)
         {
             _logger = logger;
+            _enrollmentRepository = enrollmentRepository;
+            _learningOutcomeCalculationService = learningOutcomeCalculationService;
+            _courseRepository = courseRepository;
+            _learningOutcomeRepository = learningOutcomeRepository;
 
             GetPolicyName = EduOutcomePermissions.Students.Default;
             GetListPolicyName = EduOutcomePermissions.Students.Default;
@@ -109,14 +124,108 @@ namespace PSA.EduOutcome.Students
         public async Task<StudentStatisticsDto> GetStatisticsAsync(Guid id)
         {
             var student = await Repository.GetAsync(id);
-            
-            // TODO: Implement statistics calculation when enrollment and response entities are available
+
+            var enrollments = await _enrollmentRepository.GetListAsync(e => e.StudentId == id);
+            var totalCourses = enrollments.Count;
+            var completedCourses = enrollments.Count(e => e.Status == EnrollmentStatus.Completed || e.Status == EnrollmentStatus.Failed);
+            var activeCourses = enrollments.Count(e => e.Status == EnrollmentStatus.Enrolled);
+
+            var gradedEnrollments = enrollments.Where(e => e.FinalGrade.HasValue).ToList();
+            var averageGrade = gradedEnrollments.Count > 0
+                ? Math.Round(gradedEnrollments.Average(e => e.FinalGrade!.Value), 2, MidpointRounding.AwayFromZero)
+                : 0m;
+
+            var courseIds = enrollments.Select(e => e.CourseId).Distinct().ToList();
+            var courses = courseIds.Count > 0
+                ? await _courseRepository.GetListAsync(c => courseIds.Contains(c.Id))
+                : new List<Course>();
+            var courseById = courses.ToDictionary(c => c.Id);
+
+            var learningOutcomes = courseIds.Count > 0
+                ? await _learningOutcomeRepository.GetListAsync(lo => courseIds.Contains(lo.CourseId) && lo.IsActive)
+                : new List<LearningOutcome>();
+            var learningOutcomesByCourse = learningOutcomes
+                .GroupBy(lo => lo.CourseId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            var courseAchievements = new List<StudentCourseAchievementDto>();
+            var totalOutcomeAchievement = 0m;
+            var outcomeCourseCount = 0;
+            var learningOutcomesAchieved = 0;
+
+            foreach (var enrollment in enrollments)
+            {
+                if (!courseById.TryGetValue(enrollment.CourseId, out var course))
+                {
+                    continue;
+                }
+
+                if (!learningOutcomesByCourse.TryGetValue(enrollment.CourseId, out var courseLearningOutcomes) || courseLearningOutcomes.Count == 0)
+                {
+                    continue;
+                }
+
+                var outcomeBreakdown = await _learningOutcomeCalculationService.CalculateStudentCourseOutcomesAsync(id, enrollment.CourseId);
+                if (outcomeBreakdown.Count == 0)
+                {
+                    continue;
+                }
+
+                var totalWeight = courseLearningOutcomes.Sum(lo => lo.MaxMark);
+                if (totalWeight <= 0m)
+                {
+                    continue;
+                }
+
+                var learningOutcomeDetails = new List<StudentLearningOutcomeAchievementDto>();
+                decimal weighted = 0m;
+
+                foreach (var learningOutcome in courseLearningOutcomes)
+                {
+                    var percentage = outcomeBreakdown.TryGetValue(learningOutcome.Id, out var value) ? value : 0m;
+                    weighted += (percentage / 100m) * learningOutcome.MaxMark;
+
+                    if (percentage >= OutcomeAchievementThreshold)
+                    {
+                        learningOutcomesAchieved++;
+                    }
+
+                    learningOutcomeDetails.Add(new StudentLearningOutcomeAchievementDto
+                    {
+                        LearningOutcomeId = learningOutcome.Id,
+                        Code = learningOutcome.Code,
+                        Description = learningOutcome.Description,
+                        AchievementPercentage = Math.Round(percentage, 2, MidpointRounding.AwayFromZero)
+                    });
+                }
+
+                var courseAchievement = Math.Round((weighted / totalWeight) * 100m, 2, MidpointRounding.AwayFromZero);
+                totalOutcomeAchievement += courseAchievement;
+                outcomeCourseCount++;
+
+                courseAchievements.Add(new StudentCourseAchievementDto
+                {
+                    CourseId = course.Id,
+                    CourseName = course.Name,
+                    CourseCode = course.Code,
+                    AchievementPercentage = courseAchievement,
+                    LearningOutcomeAchievements = learningOutcomeDetails
+                });
+            }
+
+            var averageOutcomeAchievement = outcomeCourseCount > 0
+                ? Math.Round(totalOutcomeAchievement / outcomeCourseCount, 2, MidpointRounding.AwayFromZero)
+                : 0m;
+
             return new StudentStatisticsDto
             {
-                TotalCourses = 0,
-                CompletedCourses = 0,
-                AverageGrade = 0,
-                LearningOutcomesAchieved = 0
+                TotalCourses = totalCourses,
+                CompletedCourses = completedCourses,
+                ActiveCourses = activeCourses,
+                AverageGrade = averageGrade,
+                LearningOutcomesAchieved = learningOutcomesAchieved,
+                AverageOutcomeAchievement = averageOutcomeAchievement,
+                CourseAchievements = courseAchievements
             };
         }
 
@@ -147,4 +256,4 @@ namespace PSA.EduOutcome.Students
             return query;
         }
     }
-} 
+}

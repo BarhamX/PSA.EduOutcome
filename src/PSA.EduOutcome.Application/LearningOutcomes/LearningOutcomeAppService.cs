@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Linq;
 using PSA.EduOutcome.DTOs;
 using PSA.EduOutcome.Entities;
 
@@ -39,30 +41,37 @@ namespace PSA.EduOutcome.LearningOutcomes
             return learningOutcomeDto;
         }
 
-        public async Task<PagedResultDto<LearningOutcomeDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public async Task<PagedResultDto<LearningOutcomeDto>> GetListAsync(GetLearningOutcomeListDto input)
         {
-            var learningOutcomes = await _learningOutcomeRepository.GetPagedListAsync(
-                input.SkipCount, 
-                input.MaxResultCount, 
-                input.Sorting ?? nameof(LearningOutcome.DisplayOrder)
-            );
-            
-            var totalCount = await _learningOutcomeRepository.GetCountAsync();
-            
-            var learningOutcomeDtos = new List<LearningOutcomeDto>();
-            
-            foreach (var learningOutcome in learningOutcomes)
-            {
-                var dto = ObjectMapper.Map<LearningOutcome, LearningOutcomeDto>(learningOutcome);
-                
-                // Get course name separately
-                var course = await _courseRepository.GetAsync(learningOutcome.CourseId);
-                dto.CourseName = course.Name;
-                
-                learningOutcomeDtos.Add(dto);
-            }
+            var queryable = await _learningOutcomeRepository.WithDetailsAsync(lo => lo.Course);
 
-            return new PagedResultDto<LearningOutcomeDto>(totalCount, learningOutcomeDtos);
+            queryable = queryable
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
+                    lo => lo.Code.Contains(input.Filter) || lo.Description.Contains(input.Filter))
+                .WhereIf(input.CourseId.HasValue, lo => lo.CourseId == input.CourseId.Value)
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Category), lo => lo.Category == input.Category);
+
+            var totalCount = await AsyncExecuter.CountAsync(queryable);
+
+            var sorting = string.IsNullOrWhiteSpace(input.Sorting)
+                ? nameof(LearningOutcome.DisplayOrder)
+                : input.Sorting;
+
+            var items = await AsyncExecuter.ToListAsync(
+                queryable
+                    .OrderBy(sorting)
+                    .Skip(input.SkipCount)
+                    .Take(input.MaxResultCount)
+            );
+
+            var dtos = items.Select(lo =>
+            {
+                var dto = ObjectMapper.Map<LearningOutcome, LearningOutcomeDto>(lo);
+                dto.CourseName = lo.Course?.Name;
+                return dto;
+            }).ToList();
+
+            return new PagedResultDto<LearningOutcomeDto>(totalCount, dtos);
         }
 
         public async Task<LearningOutcomeDto> CreateAsync(CreateUpdateLearningOutcomeDto input)
@@ -268,3 +277,12 @@ namespace PSA.EduOutcome.LearningOutcomes
         }
     }
 }
+
+
+
+
+
+
+
+
+

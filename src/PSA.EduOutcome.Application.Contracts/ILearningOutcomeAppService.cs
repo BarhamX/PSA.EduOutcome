@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -10,7 +10,7 @@ namespace PSA.EduOutcome
     public interface ILearningOutcomeAppService : IApplicationService
     {
         Task<LearningOutcomeDto> GetAsync(Guid id);
-        Task<PagedResultDto<LearningOutcomeDto>> GetListAsync(PagedAndSortedResultRequestDto input);
+        Task<PagedResultDto<LearningOutcomeDto>> GetListAsync(GetLearningOutcomeListDto input);
         Task<LearningOutcomeDto> CreateAsync(CreateUpdateLearningOutcomeDto input);
         Task<LearningOutcomeDto> UpdateAsync(Guid id, CreateUpdateLearningOutcomeDto input);
         Task DeleteAsync(Guid id);
@@ -36,3 +36,4 @@ namespace PSA.EduOutcome
         public List<string> Issues { get; set; } = new();
     }
 }
+

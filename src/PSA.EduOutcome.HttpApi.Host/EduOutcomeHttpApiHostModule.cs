@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +43,8 @@ namespace PSA.EduOutcome;
     typeof(EduOutcomeApplicationModule),
     typeof(EduOutcomeEntityFrameworkCoreModule),
     typeof(AbpSwashbuckleModule),
-    typeof(AbpAspNetCoreSerilogModule)
+    typeof(AbpAspNetCoreSerilogModule),
+    typeof(Volo.Abp.Account.Web.AbpAccountWebOpenIddictModule)
     )]
 public class EduOutcomeHttpApiHostModule : AbpModule
 {
@@ -186,6 +186,7 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         app.MapAbpStaticAssets();
         app.UseAbpStudioLink();
         app.UseRouting();
+        app.UseAuthentication();
         app.UseAbpSecurityHeaders();
         app.UseCors();
         // Authentication middleware disabled for development
@@ -209,3 +210,4 @@ public class EduOutcomeHttpApiHostModule : AbpModule
         app.UseConfiguredEndpoints();
     }
 }
+

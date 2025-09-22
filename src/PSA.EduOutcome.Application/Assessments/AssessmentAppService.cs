@@ -254,6 +254,22 @@ namespace PSA.EduOutcome.Assessments
             return result;
         }
 
+        private static string NormalizeSorting(string sorting)
+        {
+            if (string.IsNullOrWhiteSpace(sorting))
+            {
+                return "Assessment.DueDate";
+            }
+
+            if (sorting.Contains("CourseName", StringComparison.OrdinalIgnoreCase))
+            {
+                return sorting.Replace("CourseName", "Course.Name", StringComparison.OrdinalIgnoreCase);
+            }
+
+            return sorting.StartsWith("Assessment.", StringComparison.OrdinalIgnoreCase)
+                ? sorting
+                : $"Assessment.{sorting}";
+        }
         public async Task<AssessmentValidationResultDto> ValidateAssessmentAsync(Guid id)
         {
             var assessment = await _assessmentRepository.GetAsync(id);

@@ -34,11 +34,29 @@ export interface GetStudentListDto extends PagedAndSortedResultRequestDto {
   status?: string;
 }
 
+export interface StudentCourseAchievementDto {
+  courseId?: string;
+  courseName?: string;
+  courseCode?: string;
+  achievementPercentage: number;
+  learningOutcomeAchievements: StudentLearningOutcomeAchievementDto[];
+}
+
+export interface StudentLearningOutcomeAchievementDto {
+  learningOutcomeId?: string;
+  code?: string;
+  description?: string;
+  achievementPercentage: number;
+}
+
 export interface StudentStatisticsDto {
   totalCourses: number;
   completedCourses: number;
+  activeCourses: number;
   averageGrade: number;
   learningOutcomesAchieved: number;
+  averageOutcomeAchievement: number;
+  courseAchievements: StudentCourseAchievementDto[];
 }
 
 export interface UpdateStudentDto {

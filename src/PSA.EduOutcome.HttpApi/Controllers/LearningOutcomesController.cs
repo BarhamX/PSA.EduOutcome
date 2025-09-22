@@ -29,7 +29,7 @@ namespace PSA.EduOutcome.Controllers
         }
 
         [HttpGet]
-        public virtual Task<PagedResultDto<LearningOutcomeDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public virtual Task<PagedResultDto<LearningOutcomeDto>> GetListAsync(GetLearningOutcomeListDto input)
         {
             return _learningOutcomeAppService.GetListAsync(input);
         }

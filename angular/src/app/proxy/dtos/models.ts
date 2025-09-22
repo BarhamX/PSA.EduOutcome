@@ -1,4 +1,4 @@
-import type { AuditedEntityDto } from '@abp/ng.core';
+import type { AuditedEntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 
 export interface AssessmentDetailDto extends AssessmentDto {
   questions: QuestionDto[];
@@ -41,6 +41,12 @@ export interface CreateUpdateLearningOutcomeDto {
   courseId?: string;
   category?: string;
   displayOrder: number;
+}
+
+export interface GetLearningOutcomeListDto extends PagedAndSortedResultRequestDto {
+  filter?: string;
+  courseId?: string;
+  category?: string;
 }
 
 export interface LearningOutcomeDetailDto extends LearningOutcomeDto {

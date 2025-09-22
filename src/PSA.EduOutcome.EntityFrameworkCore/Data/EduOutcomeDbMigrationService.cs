@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PSA.EduOutcome.EntityFrameworkCore;
 using PSA.EduOutcome.Entities;
+using Volo.Abp;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
@@ -15,12 +13,15 @@ namespace PSA.EduOutcome.Data
 {
     public class EduOutcomeDataSeeder : IDataSeeder, ITransientDependency
     {
+        private const string DefaultUniversityCode = "DEFAULT-UNI";
+        private const string DefaultFacultyCode = "FCS";
+
         private readonly ILogger<EduOutcomeDataSeeder> _logger;
         private readonly IRepository<Student, Guid> _studentRepository;
         private readonly IRepository<Program, Guid> _programRepository;
         private readonly IRepository<Course, Guid> _courseRepository;
         private readonly IRepository<Faculty, Guid> _facultyRepository;
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<University, Guid> _universityRepository;
 
         public EduOutcomeDataSeeder(
             ILogger<EduOutcomeDataSeeder> logger,
@@ -28,106 +29,106 @@ namespace PSA.EduOutcome.Data
             IRepository<Program, Guid> programRepository,
             IRepository<Course, Guid> courseRepository,
             IRepository<Faculty, Guid> facultyRepository,
-            IUnitOfWorkManager unitOfWorkManager)
+            IRepository<University, Guid> universityRepository)
         {
             _logger = logger;
             _studentRepository = studentRepository;
             _programRepository = programRepository;
             _courseRepository = courseRepository;
             _facultyRepository = facultyRepository;
-            _unitOfWorkManager = unitOfWorkManager;
+            _universityRepository = universityRepository;
         }
 
-        public async Task SeedAsync(DataSeedContext context)
+        [UnitOfWork]
+        public virtual async Task SeedAsync(DataSeedContext context)
         {
-            if (context["DataSeed:IsSeeded"] == "true")
+            if (string.Equals(context["DataSeed:IsSeeded"] as string, "true", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
 
-            await SeedFacultiesAsync();
-            await SeedProgramsAsync();
+            var university = await EnsureDefaultUniversityAsync();
+            var faculty = await EnsureDefaultFacultyAsync(university.Id);
+
+            await SeedProgramsAsync(faculty);
             await SeedCoursesAsync();
             await SeedStudentsAsync();
 
             context["DataSeed:IsSeeded"] = "true";
         }
 
-        private async Task SeedFacultiesAsync()
+        private async Task<University> EnsureDefaultUniversityAsync()
         {
-            if (await _facultyRepository.GetCountAsync() > 0)
+            var existing = await _universityRepository.FirstOrDefaultAsync(u => u.Code == DefaultUniversityCode);
+            if (existing != null)
             {
-                return;
+                return existing;
             }
 
-            var university1 = Guid.NewGuid(); // Default university for seeding
-            
-            var faculty1 = new Faculty(
+            var university = new University(
                 Guid.NewGuid(),
-                "Faculty of Computer Science",
-                "FCS",
-                university1,
-                "Faculty of Computer Science and Information Technology"
-            );
-            
-            var faculty2 = new Faculty(
-                Guid.NewGuid(),
-                "Faculty of Engineering",
-                "FE",
-                university1,
-                "Faculty of Engineering and Technology"
-            );
-            
-            var faculties = new[] { faculty1, faculty2 };
+                "Default University",
+                DefaultUniversityCode,
+                "Default seeded university",
+                "123 College Ave",
+                "info@defaultuniversity.edu",
+                "+1-555-0100");
 
-            foreach (var faculty in faculties)
-            {
-                await _facultyRepository.InsertAsync(faculty);
-            }
-
-            _logger.LogInformation("Seeded faculties");
+            await _universityRepository.InsertAsync(university, autoSave: true);
+            _logger.LogInformation("Seeded default university {UniversityCode}", DefaultUniversityCode);
+            return university;
         }
 
-        private async Task SeedProgramsAsync()
+        private async Task<Faculty> EnsureDefaultFacultyAsync(Guid universityId)
+        {
+            var existing = await _facultyRepository.FirstOrDefaultAsync(f => f.Code == DefaultFacultyCode);
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var faculty = new Faculty(
+                Guid.NewGuid(),
+                "Faculty of Computer Science",
+                DefaultFacultyCode,
+                universityId,
+                "Faculty of Computer Science and Information Technology");
+
+            await _facultyRepository.InsertAsync(faculty, autoSave: true);
+            _logger.LogInformation("Seeded default faculty {FacultyCode}", DefaultFacultyCode);
+            return faculty;
+        }
+
+        private async Task SeedProgramsAsync(Faculty faculty)
         {
             if (await _programRepository.GetCountAsync() > 0)
             {
                 return;
             }
 
-            var faculties = await _facultyRepository.GetListAsync();
-            var fcs = faculties.First(f => f.Code == "FCS");
-
             var program1 = new Program(
                 Guid.NewGuid(),
                 "Computer Science",
                 "CS",
                 "Bachelor",
-                8, // 4 years = 8 semesters
-                120, // Total credits
-                fcs.Id,
-                "Bachelor of Science in Computer Science"
-            );
-            
+                8,
+                120,
+                faculty.Id,
+                "Bachelor of Science in Computer Science");
+
             var program2 = new Program(
                 Guid.NewGuid(),
                 "Information Technology",
                 "IT",
                 "Bachelor",
-                8, // 4 years = 8 semesters
-                120, // Total credits
-                fcs.Id,
-                "Bachelor of Science in Information Technology"
-            );
-            
-            var programs = new[] { program1, program2 };
+                8,
+                120,
+                faculty.Id,
+                "Bachelor of Science in Information Technology");
 
-            foreach (var program in programs)
-            {
-                await _programRepository.InsertAsync(program);
-            }
-
-            _logger.LogInformation("Seeded programs");
+            await _programRepository.InsertAsync(program1, autoSave: true);
+            await _programRepository.InsertAsync(program2, autoSave: true);
+            _logger.LogInformation("Seeded default programs");
         }
 
         private async Task SeedCoursesAsync()
@@ -138,10 +139,24 @@ namespace PSA.EduOutcome.Data
             }
 
             var programs = await _programRepository.GetListAsync();
-            var cs = programs.First(p => p.Code == "CS");
-            var it = programs.First(p => p.Code == "IT");
+            if (programs.Count == 0)
+            {
+                throw new BusinessException("Programs must be seeded before courses.");
+            }
+
+            var cs = programs.FirstOrDefault(p => p.Code == "CS");
+            var it = programs.FirstOrDefault(p => p.Code == "IT");
+            if (cs == null || it == null)
+            {
+                throw new BusinessException("Default CS/IT programs could not be found.");
+            }
+
             var faculties = await _facultyRepository.GetListAsync();
-            var fcs = faculties.First(f => f.Code == "FCS");
+            var fcs = faculties.FirstOrDefault(f => f.Code == DefaultFacultyCode);
+            if (fcs == null)
+            {
+                throw new BusinessException($"Faculty '{DefaultFacultyCode}' could not be found while seeding courses.");
+            }
 
             var course1 = new Course(
                 Guid.NewGuid(),
@@ -152,9 +167,8 @@ namespace PSA.EduOutcome.Data
                 2024,
                 cs.Id,
                 fcs.Id,
-                "Basic programming concepts and problem-solving"
-            );
-            
+                "Basic programming concepts and problem-solving");
+
             var course2 = new Course(
                 Guid.NewGuid(),
                 "Data Structures and Algorithms",
@@ -164,9 +178,8 @@ namespace PSA.EduOutcome.Data
                 2024,
                 cs.Id,
                 fcs.Id,
-                "Fundamental data structures and algorithms"
-            );
-            
+                "Fundamental data structures and algorithms");
+
             var course3 = new Course(
                 Guid.NewGuid(),
                 "Introduction to Information Technology",
@@ -176,17 +189,12 @@ namespace PSA.EduOutcome.Data
                 2024,
                 it.Id,
                 fcs.Id,
-                "Overview of IT concepts and applications"
-            );
-            
-            var courses = new[] { course1, course2, course3 };
+                "Overview of IT concepts and applications");
 
-            foreach (var course in courses)
-            {
-                await _courseRepository.InsertAsync(course);
-            }
-
-            _logger.LogInformation("Seeded courses");
+            await _courseRepository.InsertAsync(course1, autoSave: true);
+            await _courseRepository.InsertAsync(course2, autoSave: true);
+            await _courseRepository.InsertAsync(course3, autoSave: true);
+            _logger.LogInformation("Seeded default courses");
         }
 
         private async Task SeedStudentsAsync()
@@ -197,9 +205,15 @@ namespace PSA.EduOutcome.Data
             }
 
             var programs = await _programRepository.GetListAsync();
+            if (programs.Count == 0)
+            {
+                _logger.LogWarning("Skipping student seed because programs were not found.");
+                return;
+            }
+
             var random = new Random();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var program = programs[random.Next(programs.Count)];
                 var student = Student.Create(
@@ -209,13 +223,12 @@ namespace PSA.EduOutcome.Data
                     DateTime.Now.AddYears(-20 - i),
                     i % 2 == 0 ? "Male" : "Female",
                     program.Id,
-                    $"REF{i:000}"
-                );
+                    $"REF{i:000}", $"+1-555-01{i:00}");
 
-                await _studentRepository.InsertAsync(student);
+                await _studentRepository.InsertAsync(student, autoSave: true);
             }
 
-            _logger.LogInformation("Seeded students");
+            _logger.LogInformation("Seeded demo students");
         }
     }
-} 
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +27,13 @@ namespace PSA.EduOutcome.DTOs
         public Guid CourseId { get; set; }
         public string Category { get; set; }
         public int DisplayOrder { get; set; }
+    }
+
+    public class GetLearningOutcomeListDto : PagedAndSortedResultRequestDto
+    {
+        public string Filter { get; set; }
+        public Guid? CourseId { get; set; }
+        public string Category { get; set; }
     }
 
     public class LearningOutcomeDetailDto : LearningOutcomeDto

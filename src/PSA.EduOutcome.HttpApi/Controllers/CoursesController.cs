@@ -24,8 +24,7 @@ public class CoursesController : EduOutcomeController
     [HttpGet("{programId}/semester/{semester}/electives")]
     public Task<List<CourseDto>> GetElectives(Guid programId, string semester)
     {
-        // TODO: Implement GetElectiveCoursesAsync method in CourseAppService
-        throw new NotImplementedException("GetElectiveCoursesAsync not yet implemented");
+        return _courseAppService.GetElectiveCoursesAsync(programId, semester);
     }
 
     [HttpGet("{id}/report")]

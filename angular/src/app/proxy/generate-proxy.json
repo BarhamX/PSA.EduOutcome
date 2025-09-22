@@ -2068,14 +2068,50 @@
               "parametersOnMethod": [
                 {
                   "name": "input",
-                  "typeAsString": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto, Volo.Abp.Ddd.Application.Contracts",
-                  "type": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
-                  "typeSimple": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                  "typeAsString": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto, PSA.EduOutcome.Application.Contracts",
+                  "type": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto",
+                  "typeSimple": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto",
                   "isOptional": false,
                   "defaultValue": null
                 }
               ],
               "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "CourseId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Category",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
                 {
                   "nameOnMethod": "input",
                   "name": "Sorting",
@@ -3480,9 +3516,9 @@
                   "parametersOnMethod": [
                     {
                       "name": "input",
-                      "typeAsString": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto, Volo.Abp.Ddd.Application.Contracts",
-                      "type": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
-                      "typeSimple": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                      "typeAsString": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto, PSA.EduOutcome.Application.Contracts",
+                      "type": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto",
+                      "typeSimple": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto",
                       "isOptional": false,
                       "defaultValue": null
                     }
@@ -3652,14 +3688,50 @@
               "parametersOnMethod": [
                 {
                   "name": "input",
-                  "typeAsString": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto, Volo.Abp.Ddd.Application.Contracts",
-                  "type": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
-                  "typeSimple": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                  "typeAsString": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto, PSA.EduOutcome.Application.Contracts",
+                  "type": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto",
+                  "typeSimple": "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto",
                   "isOptional": false,
                   "defaultValue": null
                 }
               ],
               "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "CourseId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Category",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
                 {
                   "nameOnMethod": "input",
                   "name": "Sorting",
@@ -4017,658 +4089,6 @@
               },
               "allowAnonymous": null,
               "implementFrom": "PSA.EduOutcome.Reporting.IReportingAppService"
-            }
-          }
-        },
-        "PSA.EduOutcome.StudentAppService": {
-          "controllerName": "Student",
-          "controllerGroupName": "Student",
-          "isRemoteService": true,
-          "isIntegrationService": false,
-          "apiVersion": null,
-          "type": "PSA.EduOutcome.StudentAppService",
-          "interfaces": [
-            {
-              "type": "PSA.EduOutcome.IStudentAppService",
-              "name": "IStudentAppService",
-              "methods": []
-            }
-          ],
-          "actions": {
-            "GetByStudentNumberAsyncByStudentNumber": {
-              "uniqueName": "GetByStudentNumberAsyncByStudentNumber",
-              "name": "GetByStudentNumberAsync",
-              "httpMethod": "GET",
-              "url": "api/app/student/by-student-number",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "studentNumber",
-                  "typeAsString": "System.String, System.Private.CoreLib",
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "studentNumber",
-                  "name": "studentNumber",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "GetByProgramAsyncByProgramId": {
-              "uniqueName": "GetByProgramAsyncByProgramId",
-              "name": "GetByProgramAsync",
-              "httpMethod": "GET",
-              "url": "api/app/student/by-program/{programId}",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "programId",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "programId",
-                  "name": "programId",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "System.Collections.Generic.List<PSA.EduOutcome.Students.Dtos.StudentDto>",
-                "typeSimple": "[PSA.EduOutcome.Students.Dtos.StudentDto]"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "GetByUserIdAsyncByUserId": {
-              "uniqueName": "GetByUserIdAsyncByUserId",
-              "name": "GetByUserIdAsync",
-              "httpMethod": "GET",
-              "url": "api/app/student/by-user-id/{userId}",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "userId",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "userId",
-                  "name": "userId",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "GraduateAsyncById": {
-              "uniqueName": "GraduateAsyncById",
-              "name": "GraduateAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student/{id}/graduate",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "SuspendAsyncById": {
-              "uniqueName": "SuspendAsyncById",
-              "name": "SuspendAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student/{id}/suspend",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "WithdrawAsyncById": {
-              "uniqueName": "WithdrawAsyncById",
-              "name": "WithdrawAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student/{id}/withdraw",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "ReactivateAsyncById": {
-              "uniqueName": "ReactivateAsyncById",
-              "name": "ReactivateAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student/{id}/reactivate",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "ExportToExcelAsyncByInput": {
-              "uniqueName": "ExportToExcelAsyncByInput",
-              "name": "ExportToExcelAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student/export-to-excel",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "input",
-                  "typeAsString": "PSA.EduOutcome.Students.Dtos.GetStudentListDto, PSA.EduOutcome.Application.Contracts",
-                  "type": "PSA.EduOutcome.Students.Dtos.GetStudentListDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.GetStudentListDto",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "input",
-                  "name": "input",
-                  "jsonName": null,
-                  "type": "PSA.EduOutcome.Students.Dtos.GetStudentListDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.GetStudentListDto",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "Body",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "System.Byte[]",
-                "typeSimple": "[number]"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "ImportFromExcelAsyncByFileContent": {
-              "uniqueName": "ImportFromExcelAsyncByFileContent",
-              "name": "ImportFromExcelAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student/import-from-excel",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "fileContent",
-                  "typeAsString": "System.Byte[], System.Private.CoreLib",
-                  "type": "System.Byte[]",
-                  "typeSimple": "[number]",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "fileContent",
-                  "name": "fileContent",
-                  "jsonName": null,
-                  "type": "System.Byte[]",
-                  "typeSimple": "[number]",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "Body",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "System.Void",
-                "typeSimple": "System.Void"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "GetStatisticsAsyncById": {
-              "uniqueName": "GetStatisticsAsyncById",
-              "name": "GetStatisticsAsync",
-              "httpMethod": "GET",
-              "url": "api/app/student/{id}/statistics",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentStatisticsDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentStatisticsDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "PSA.EduOutcome.StudentAppService"
-            },
-            "CreateAsyncByInput": {
-              "uniqueName": "CreateAsyncByInput",
-              "name": "CreateAsync",
-              "httpMethod": "POST",
-              "url": "api/app/student",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "input",
-                  "typeAsString": "PSA.EduOutcome.Students.Dtos.CreateStudentDto, PSA.EduOutcome.Application.Contracts",
-                  "type": "PSA.EduOutcome.Students.Dtos.CreateStudentDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.CreateStudentDto",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "input",
-                  "name": "input",
-                  "jsonName": null,
-                  "type": "PSA.EduOutcome.Students.Dtos.CreateStudentDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.CreateStudentDto",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "Body",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<PSA.EduOutcome.Students.Dtos.StudentDto,PSA.EduOutcome.Students.Dtos.CreateStudentDto>"
-            },
-            "UpdateAsyncByIdAndInput": {
-              "uniqueName": "UpdateAsyncByIdAndInput",
-              "name": "UpdateAsync",
-              "httpMethod": "PUT",
-              "url": "api/app/student/{id}",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                },
-                {
-                  "name": "input",
-                  "typeAsString": "PSA.EduOutcome.Students.Dtos.UpdateStudentDto, PSA.EduOutcome.Application.Contracts",
-                  "type": "PSA.EduOutcome.Students.Dtos.UpdateStudentDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.UpdateStudentDto",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "input",
-                  "jsonName": null,
-                  "type": "PSA.EduOutcome.Students.Dtos.UpdateStudentDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.UpdateStudentDto",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "Body",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<PSA.EduOutcome.Students.Dtos.StudentDto,System.Guid,PSA.EduOutcome.Students.Dtos.UpdateStudentDto>"
-            },
-            "DeleteAsyncById": {
-              "uniqueName": "DeleteAsyncById",
-              "name": "DeleteAsync",
-              "httpMethod": "DELETE",
-              "url": "api/app/student/{id}",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "System.Void",
-                "typeSimple": "System.Void"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
-            },
-            "GetAsyncById": {
-              "uniqueName": "GetAsyncById",
-              "name": "GetAsync",
-              "httpMethod": "GET",
-              "url": "api/app/student/{id}",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "id",
-                  "typeAsString": "System.Guid, System.Private.CoreLib",
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "id",
-                  "name": "id",
-                  "jsonName": null,
-                  "type": "System.Guid",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": [],
-                  "bindingSourceId": "Path",
-                  "descriptorName": ""
-                }
-              ],
-              "returnValue": {
-                "type": "PSA.EduOutcome.Students.Dtos.StudentDto",
-                "typeSimple": "PSA.EduOutcome.Students.Dtos.StudentDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<PSA.EduOutcome.Students.Dtos.StudentDto,PSA.EduOutcome.Students.Dtos.StudentDto,System.Guid,PSA.EduOutcome.Students.Dtos.GetStudentListDto>"
-            },
-            "GetListAsyncByInput": {
-              "uniqueName": "GetListAsyncByInput",
-              "name": "GetListAsync",
-              "httpMethod": "GET",
-              "url": "api/app/student",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "input",
-                  "typeAsString": "PSA.EduOutcome.Students.Dtos.GetStudentListDto, PSA.EduOutcome.Application.Contracts",
-                  "type": "PSA.EduOutcome.Students.Dtos.GetStudentListDto",
-                  "typeSimple": "PSA.EduOutcome.Students.Dtos.GetStudentListDto",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "input",
-                  "name": "Filter",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "ProgramId",
-                  "jsonName": null,
-                  "type": "System.Guid?",
-                  "typeSimple": "string?",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "Status",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "Sorting",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "SkipCount",
-                  "jsonName": null,
-                  "type": "System.Int32",
-                  "typeSimple": "number",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "MaxResultCount",
-                  "jsonName": null,
-                  "type": "System.Int32",
-                  "typeSimple": "number",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                }
-              ],
-              "returnValue": {
-                "type": "Volo.Abp.Application.Dtos.PagedResultDto<PSA.EduOutcome.Students.Dtos.StudentDto>",
-                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<PSA.EduOutcome.Students.Dtos.StudentDto>"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<PSA.EduOutcome.Students.Dtos.StudentDto,PSA.EduOutcome.Students.Dtos.StudentDto,System.Guid,PSA.EduOutcome.Students.Dtos.GetStudentListDto>"
             }
           }
         },
@@ -8491,6 +7911,63 @@
         }
       ]
     },
+    "PSA.EduOutcome.Courses.Dtos.CourseLearningOutcomeAchievementDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "LearningOutcomeId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Code",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Description",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AchievementPercentage",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "PSA.EduOutcome.Courses.Dtos.CourseStatisticsDto": {
       "baseType": null,
       "isEnum": false,
@@ -8539,6 +8016,30 @@
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AverageOutcomeAchievement",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "LearningOutcomeAchievements",
+          "jsonName": null,
+          "type": "[PSA.EduOutcome.Courses.Dtos.CourseLearningOutcomeAchievementDto]",
+          "typeSimple": "[PSA.EduOutcome.Courses.Dtos.CourseLearningOutcomeAchievementDto]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -9376,6 +8877,51 @@
         }
       ]
     },
+    "PSA.EduOutcome.DTOs.GetLearningOutcomeListDto": {
+      "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Filter",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CourseId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Category",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "PSA.EduOutcome.DTOs.LearningOutcomeDetailDto": {
       "baseType": "PSA.EduOutcome.DTOs.LearningOutcomeDto",
       "isEnum": false,
@@ -10138,6 +9684,75 @@
         }
       ]
     },
+    "PSA.EduOutcome.Students.Dtos.StudentCourseAchievementDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "CourseId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CourseName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CourseCode",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AchievementPercentage",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "LearningOutcomeAchievements",
+          "jsonName": null,
+          "type": "[PSA.EduOutcome.Students.Dtos.StudentLearningOutcomeAchievementDto]",
+          "typeSimple": "[PSA.EduOutcome.Students.Dtos.StudentLearningOutcomeAchievementDto]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "PSA.EduOutcome.Students.Dtos.StudentDto": {
       "baseType": "Volo.Abp.Application.Dtos.AuditedEntityDto<System.Guid>",
       "isEnum": false,
@@ -10315,6 +9930,63 @@
         }
       ]
     },
+    "PSA.EduOutcome.Students.Dtos.StudentLearningOutcomeAchievementDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "LearningOutcomeId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Code",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Description",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AchievementPercentage",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "PSA.EduOutcome.Students.Dtos.StudentStatisticsDto": {
       "baseType": null,
       "isEnum": false,
@@ -10347,6 +10019,18 @@
           "regex": null
         },
         {
+          "name": "ActiveCourses",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "AverageGrade",
           "jsonName": null,
           "type": "System.Decimal",
@@ -10363,6 +10047,30 @@
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AverageOutcomeAchievement",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CourseAchievements",
+          "jsonName": null,
+          "type": "[PSA.EduOutcome.Students.Dtos.StudentCourseAchievementDto]",
+          "typeSimple": "[PSA.EduOutcome.Students.Dtos.StudentCourseAchievementDto]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

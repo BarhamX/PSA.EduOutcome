@@ -8,9 +8,8 @@ import { finalize } from 'rxjs/operators';
 
 import { LearningOutcomeService } from '../../proxy/learning-outcomes/learning-outcome.service';
 import { CourseService } from '../../proxy/courses/course.service';
-import { LearningOutcomeDto, CreateUpdateLearningOutcomeDto } from '../../proxy/dtos/models';
+import { GetLearningOutcomeListDto, LearningOutcomeDto } from '../../proxy/dtos/models';
 import { CourseDto, GetCourseListDto } from '../../proxy/courses/dtos/models';
-import { PagedAndSortedResultRequestDto } from '@abp/ng.core';
 
 @Component({
   selector: 'app-learning-outcome-list',
@@ -75,9 +74,15 @@ export class LearningOutcomeListComponent implements OnInit {
   getLearningOutcomes(): void {
     this.loading = true;
 
-    const request: PagedAndSortedResultRequestDto = {
+    const { filter, courseId, category } = this.filterForm.value;
+
+    const request: GetLearningOutcomeListDto = {
       skipCount: this.skipCount,
-      maxResultCount: this.maxResultCount
+      maxResultCount: this.maxResultCount,
+      sorting: 'DisplayOrder',
+      filter: filter?.trim() ? filter.trim() : undefined,
+      courseId: courseId ? courseId : undefined,
+      category: category ? category : undefined,
     };
 
     this.learningOutcomeService
@@ -88,7 +93,7 @@ export class LearningOutcomeListComponent implements OnInit {
           this.data = response;
           this.totalCount = response.totalCount;
         },
-        error => {
+        () => {
           this.toaster.error('An error occurred while loading learning outcomes');
         }
       );

@@ -17,11 +17,20 @@ export interface CourseDto extends AuditedEntityDto<string> {
   academicYear: number;
 }
 
+export interface CourseLearningOutcomeAchievementDto {
+  learningOutcomeId?: string;
+  code?: string;
+  description?: string;
+  achievementPercentage: number;
+}
+
 export interface CourseStatisticsDto {
   totalEnrollments: number;
   activeEnrollments: number;
   averageGrade: number;
   learningOutcomesCovered: number;
+  averageOutcomeAchievement: number;
+  learningOutcomeAchievements: CourseLearningOutcomeAchievementDto[];
 }
 
 export interface CreateCourseDto {
