@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp;
@@ -78,6 +78,11 @@ namespace PSA.EduOutcome.Entities
             QuestionType = type;
         }
 
+        public void SetDescription(string description)
+        {
+            Description = description;
+        }
+
         public void MapToLearningOutcome(Guid learningOutcomeId, decimal allocatedMark, decimal percentage)
         {
             if (QuestionLearningOutcomes.Any(qlo => qlo.LearningOutcomeId == learningOutcomeId))
@@ -132,3 +137,6 @@ namespace PSA.EduOutcome.Entities
         }
     }
 }
+
+
+

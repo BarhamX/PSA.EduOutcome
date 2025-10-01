@@ -1,0 +1,116 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="card-title mb-0">
+          <i class="fas fa-question-circle me-2"></i>
+          Question Bank
+        </h5>
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn btn-primary" (click)="createNew()">
+          <i class="fas fa-plus me-1"></i>
+          New Question
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="row mb-3" [formGroup]="filterForm">
+      <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by text or description..."
+          formControlName="filter"
+        />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Assessment</label>
+        <select class="form-select" formControlName="assessmentId">
+          <option value="">All Assessments</option>
+          <option *ngFor="let assessment of assessments" [value]="assessment.id">
+            {{ assessment.title }} ({{ assessment.type }})
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Question Type</label>
+        <select class="form-select" formControlName="questionType">
+          <option *ngFor="let type of questionTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Mapping Status</label>
+        <select class="form-select" formControlName="mappingStatus">
+          <option *ngFor="let option of mappingStatusOptions" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="text-muted">
+        Showing {{ data?.items?.length || 0 }} of {{ totalCount }} questions
+      </div>
+      <button class="btn btn-link" type="button" (click)="clearFilters()">Clear filters</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Question</th>
+            <th scope="col">Type</th>
+            <th scope="col">Max Mark</th>
+            <th scope="col">Assessment</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="loading">
+            <td colspan="6" class="text-center py-4">
+              <i class="fas fa-spinner fa-spin me-2"></i>
+              Loading questions...
+            </td>
+          </tr>
+          <tr *ngIf="!loading && (!data?.items || data.items.length === 0)">
+            <td colspan="6" class="text-center py-4 text-muted">
+              No questions found.
+            </td>
+          </tr>
+          <tr *ngFor="let question of data?.items; trackBy: trackByFn">
+            <td>{{ question.questionNumber }}</td>
+            <td>
+              <div class="fw-semibold">{{ question.text }}</div>
+              <div class="text-muted small" *ngIf="question.description">{{ question.description }}</div>
+            </td>
+            <td>
+              <span class="badge bg-secondary">{{ question.questionType }}</span>
+            </td>
+            <td>{{ question.maxMark | number:'1.0-2' }}</td>
+            <td>{{ getAssessmentLabel(question.assessmentId) }}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="edit(question.id)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="delete(question.id, question.text || 'Question')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      [totalRecords]="totalCount"
+      [pageSize]="maxResultCount"
+      [currentPage]="currentPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
+  </div>
+</div>

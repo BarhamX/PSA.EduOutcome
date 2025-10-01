@@ -61,6 +61,22 @@ namespace PSA.EduOutcome.Permissions
                 EduOutcomePermissions.LearningOutcomes.Delete,
                 L("Permission:LearningOutcomes.Delete"));
 
+            // Question permissions
+            var questionsPermission = eduOutcomeGroup.AddPermission(
+                EduOutcomePermissions.Questions.Default,
+                L("Permission:Questions"));
+
+            questionsPermission.AddChild(
+                EduOutcomePermissions.Questions.Create,
+                L("Permission:Questions.Create"));
+
+            questionsPermission.AddChild(
+                EduOutcomePermissions.Questions.Edit,
+                L("Permission:Questions.Edit"));
+
+            questionsPermission.AddChild(
+                EduOutcomePermissions.Questions.Delete,
+                L("Permission:Questions.Delete"));
             // Assessments permissions
             var assessmentsPermission = eduOutcomeGroup.AddPermission(
                 EduOutcomePermissions.Assessments.Default,

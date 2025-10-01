@@ -26,6 +26,14 @@ namespace PSA.EduOutcome.DTOs
         public string QuestionType { get; set; }
     }
 
+    public class GetQuestionListDto : PagedAndSortedResultRequestDto
+    {
+        public Guid? AssessmentId { get; set; }
+        public string Filter { get; set; }
+        public string QuestionType { get; set; }
+        public bool? HasLearningOutcomeMappings { get; set; }
+    }
+
     public class QuestionLearningOutcomeDto
     {
         public Guid Id { get; set; }
@@ -43,4 +51,4 @@ namespace PSA.EduOutcome.DTOs
         public decimal AllocatedMark { get; set; }
         public decimal Percentage { get; set; }
     }
-} 
+}

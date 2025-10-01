@@ -49,3 +49,4 @@ public class EduOutcomeApplicationAutoMapperProfile : Profile
             .ForMember(dest => dest.Percentage, opt => opt.MapFrom(src => src.Percentage));
     }
 }
+

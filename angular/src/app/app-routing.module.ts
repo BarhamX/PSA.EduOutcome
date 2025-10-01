@@ -17,6 +17,14 @@ const routes: Routes = [
     },
   },
   {
+    path: 'questions',
+    loadChildren: () => import('./questions/questions.module').then(m => m.QuestionsModule),
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: 'EduOutcome.Questions',
+    },
+  },
+  {
     path: 'account',
     loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
   },
@@ -26,13 +34,11 @@ const routes: Routes = [
   },
   {
     path: 'tenant-management',
-    loadChildren: () =>
-      import('@abp/ng.tenant-management').then(m => m.TenantManagementModule.forLazy()),
+    loadChildren: () => import('@abp/ng.tenant-management').then(m => m.TenantManagementModule.forLazy()),
   },
   {
     path: 'setting-management',
-    loadChildren: () =>
-      import('@abp/ng.setting-management').then(m => m.SettingManagementModule.forLazy()),
+    loadChildren: () => import('@abp/ng.setting-management').then(m => m.SettingManagementModule.forLazy()),
   },
 ];
 

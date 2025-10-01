@@ -26,3 +26,4 @@ function configureRoutes(routes: RoutesService) {
     ]);
   };
 }
+

@@ -1,4 +1,3 @@
-
 namespace PSA.EduOutcome.Permissions
 {
     public static class EduOutcomePermissions
@@ -24,6 +23,14 @@ namespace PSA.EduOutcome.Permissions
         public static class LearningOutcomes
         {
             public const string Default = GroupName + ".LearningOutcomes";
+            public const string Create = Default + ".Create";
+            public const string Edit = Default + ".Edit";
+            public const string Delete = Default + ".Delete";
+        }
+
+        public static class Questions
+        {
+            public const string Default = GroupName + ".Questions";
             public const string Create = Default + ".Create";
             public const string Edit = Default + ".Edit";
             public const string Delete = Default + ".Delete";
